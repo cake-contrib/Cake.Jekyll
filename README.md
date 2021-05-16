@@ -31,7 +31,7 @@ This addin exposes the functionality of [Jekyll](https://jekyllrb.com) to the Ca
 First of all, you need to import `Cake.Jekyll` in your build script by using the [`addin`](http://cakebuild.net/docs/fundamentals/preprocessor-directives) directive:
 
 ```csharp
-#addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+#addin "nuget:?package=Cake.Jekyll&version=1.0.1"
 ```
 
 _Make sure the `&version=` attribute references the [latest version of Cake.Jekyll](https://www.nuget.org/packages/Cake.Jekyll/) compatible with the Cake runner that you are using. Check the [compatibility table](#compatibility) to see which version of Cake.Jekyll to choose_.
@@ -39,7 +39,7 @@ _Make sure the `&version=` attribute references the [latest version of Cake.Jeky
 Next, call the Jekyll commands you'd like to use:
 
 ```csharp
-#addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+#addin "nuget:?package=Cake.Jekyll&version=1.0.1"
 
 Task("Build")
     .Does(() =>
@@ -269,10 +269,10 @@ In the [sample](sample/) folder, there are several examples of usage:
 
 Cake.Jekyll is compatible with all [Cake runners](https://cakebuild.net/docs/running-builds/runners/), and below you can find which version of Cake.Jekyll you should use based on the version of the Cake runner you're using.
 
-| Cake runner     | Cake.Jekyll            | Cake addin directive                                       |
-|:---------------:|:----------------------:| ---------------------------------------------------------- |
-| 1.0.0 or higher | 1.0.0-alpha2 or higher | `#addin "nuget:?package=Cake.Jekyll&version=1.0.0-alpha2"` |
-| < 1.0.0         | _N/A_                  | _(not supported)_                                          |
+| Cake runner     | Cake.Jekyll            | Cake addin directive                                |
+|:---------------:|:----------------------:| --------------------------------------------------- |
+| 1.0.0 or higher | 1.0.0-alpha2 or higher | `#addin "nuget:?package=Cake.Jekyll&version=1.0.1"` |
+| < 1.0.0         | _N/A_                  | _(not supported)_                                   |
 
 ## Discussion
 
@@ -282,7 +282,7 @@ For questions and to discuss ideas & feature requests, use the [GitHub discussio
 
 ## Release History
 
-Click on the [Releases](https://github.com/augustoproiete/Cake.Jekyll/releases) tab on GitHub.
+Click on the [Releases](https://github.com/cake-contrib/Cake.Jekyll/releases) tab on GitHub.
 
 ---
 
