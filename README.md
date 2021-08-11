@@ -271,7 +271,7 @@ Cake.Jekyll is compatible with all [Cake runners](https://cakebuild.net/docs/run
 
 | Cake runner     | Cake.Jekyll            | Cake addin directive                                |
 |:---------------:|:----------------------:| --------------------------------------------------- |
-| 1.0.0 or higher | 1.0.0-alpha2 or higher | `#addin "nuget:?package=Cake.Jekyll&version=1.0.1"` |
+| 1.0.0 or higher | 1.0.0 or higher        | `#addin "nuget:?package=Cake.Jekyll&version=1.0.1"` |
 | < 1.0.0         | _N/A_                  | _(not supported)_                                   |
 
 ## Discussion
