@@ -29,14 +29,14 @@
     <Company>augustoproiete.net</Company>
     <Description>Cake addin that makes Jekyll available in Cake builds. Jekyll is a blog-aware, static site generator in Ruby.</Description>
     <Copyright>Copyright 2021 C. Augusto Proiete &amp; Contributors - Provided under the MIT License</Copyright>
-    <PackageTags>cake;jekyll;bundler;bundle;ruby;blog;cake-addin;cake-build;addin;script;build;augustoproiete;augusto-proiete</PackageTags>
+    <PackageTags>cake;jekyll;bundler;bundle;ruby;blog;cake-addin;cake-build;addin;script;build;cake-contrib;augustoproiete;augusto-proiete</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>images\icon.png</PackageIcon>
     <PackageIconUrl>https://cdn.jsdelivr.net/gh/cake-contrib/graphics/png/addin/cake-contrib-addin-medium.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/augustoproiete/Cake.Jekyll</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/augustoproiete/Cake.Jekyll/releases</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/cake-contrib/Cake.Jekyll</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/cake-contrib/Cake.Jekyll/releases</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/augustoproiete/Cake.Jekyll.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/cake-contrib/Cake.Jekyll.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

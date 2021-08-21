@@ -1,1 +1,1 @@
-See: https://github.com/augustoproiete/Cake.Jekyll/releases
+See: https://github.com/cake-contrib/Cake.Jekyll/releases

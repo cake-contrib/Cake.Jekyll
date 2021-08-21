@@ -60,7 +60,7 @@ Task("pack")
     .IsDependentOn("test")
     .Does(() =>
 {
-    var releaseNotes = $"https://github.com/augustoproiete/Cake.Jekyll/releases/tag/v{buildVersion.Version}";
+    var releaseNotes = $"https://github.com/cake-contrib/Cake.Jekyll/releases/tag/v{buildVersion.Version}";
 
     DotNetCorePack("./src/Cake.Jekyll/Cake.Jekyll.csproj", new DotNetCorePackSettings
     {
