@@ -68,8 +68,8 @@ namespace Cake.Jekyll
         protected sealed override IEnumerable<string> GetToolExecutableNames()
         {
             return _useBundler
-                ? new[] { "bundle.cmd", "bundle.exe", "bundle" }
-                : new[] { "jekyll.cmd", "jekyll.exe", "jekyll" };
+                ? new[] { "bundle.bat", "bundle.cmd", "bundle.exe", "bundle" }
+                : new[] { "jekyll.bat", "jekyll.cmd", "jekyll.exe", "jekyll" };
         }
 
         /// <summary>
