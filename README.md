@@ -31,7 +31,7 @@ This addin exposes the functionality of [Jekyll](https://jekyllrb.com) to the Ca
 First of all, you need to import `Cake.Jekyll` in your build script by using the [`addin`](http://cakebuild.net/docs/fundamentals/preprocessor-directives) directive:
 
 ```csharp
-#addin "nuget:?package=Cake.Jekyll&version=2.0.0"
+#addin "nuget:?package=Cake.Jekyll&version=3.0.0"
 ```
 
 _Make sure the `&version=` attribute references the [latest version of Cake.Jekyll](https://www.nuget.org/packages/Cake.Jekyll/) compatible with the Cake runner that you are using. Check the [compatibility table](#compatibility) to see which version of Cake.Jekyll to choose_.
@@ -39,7 +39,7 @@ _Make sure the `&version=` attribute references the [latest version of Cake.Jeky
 Next, call the Jekyll commands you'd like to use:
 
 ```csharp
-#addin "nuget:?package=Cake.Jekyll&version=2.0.0"
+#addin "nuget:?package=Cake.Jekyll&version=3.0.0"
 
 Task("Build")
     .Does(() =>
@@ -269,11 +269,12 @@ In the [sample](sample/) folder, there are several examples of usage:
 
 Cake.Jekyll is compatible with all [Cake runners](https://cakebuild.net/docs/running-builds/runners/), and below you can find which version of Cake.Jekyll you should use based on the version of the Cake runner you're using.
 
-| Cake runner     | Cake.Jekyll            | Cake addin directive                                |
-|:---------------:|:----------------------:| --------------------------------------------------- |
-| 2.0.0 or higher | 2.0.0 or higher        | `#addin "nuget:?package=Cake.Jekyll&version=2.0.0"` |
-| 1.0.0 - 1.3.0   | 1.0.0 - 1.0.1          | `#addin "nuget:?package=Cake.Jekyll&version=1.0.1"` |
-| < 1.0.0         | _N/A_                  | _(not supported)_                                   |
+| Cake runner     | Cake.Jekyll      | Cake addin directive                                |
+|:---------------:|:----------------:| --------------------------------------------------- |
+| 3.0.0 or higher | 3.0.0 or higher  | `#addin "nuget:?package=Cake.Jekyll&version=3.0.0"` |
+| 2.0.0 - 2.3.0   | 2.0.0 - 2.1.0    | `#addin "nuget:?package=Cake.Jekyll&version=2.0.0"` |
+| 1.0.0 - 1.3.0   | 1.0.0 - 1.0.1    | `#addin "nuget:?package=Cake.Jekyll&version=1.0.1"` |
+| < 1.0.0         | _N/A_            | _(not supported)_                                   |
 
 ## Discussion
 
@@ -287,4 +288,4 @@ Click on the [Releases](https://github.com/cake-contrib/Cake.Jekyll/releases) ta
 
 ---
 
-_Copyright &copy; 2022 C. Augusto Proiete & Contributors - Provided under the [MIT License](LICENSE)._
+_Copyright &copy; 2021-2022 C. Augusto Proiete & Contributors - Provided under the [MIT License](LICENSE)._
