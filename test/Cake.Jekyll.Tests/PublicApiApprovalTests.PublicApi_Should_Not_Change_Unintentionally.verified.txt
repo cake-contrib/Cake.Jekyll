@@ -1,0 +1,479 @@
+﻿namespace Cake.Jekyll.Commands.Build
+{
+    public class JekyllBuildSettings : Cake.Jekyll.JekyllSettings
+    {
+        public JekyllBuildSettings() { }
+        public string BaseUrl { get; set; }
+        public Cake.Jekyll.Core.IO.OneOrMoreFilePaths Configuration { get; set; }
+        public Cake.Core.IO.DirectoryPath Destination { get; set; }
+        public bool? DisableDiskCache { get; set; }
+        public bool? Drafts { get; set; }
+        public bool? ForcePolling { get; set; }
+        public bool? Future { get; set; }
+        public bool? IncrementalBuild { get; set; }
+        public Cake.Core.IO.DirectoryPath Layouts { get; set; }
+        public int? LimitPosts { get; set; }
+        public bool? LiquidProfile { get; set; }
+        public Cake.Jekyll.JekyllLogLevel? LogLevel { get; set; }
+        public bool? Lsi { get; set; }
+        public Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths Plugins { get; set; }
+        public bool? SafeMode { get; set; }
+        public Cake.Core.IO.DirectoryPath Source { get; set; }
+        public bool? StrictFrontMatter { get; set; }
+        public bool? Trace { get; set; }
+        public bool? Unpublished { get; set; }
+        public bool? Watch { get; set; }
+        protected override void EvaluateCore(Cake.Core.IO.ProcessArgumentBuilder args) { }
+    }
+    public static class JekyllBuildSettingsExtensions
+    {
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings DisableDiskCache(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool disable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings DoNotUseBundler(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings EnableIncrementalBuild(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings EnableLiquidProfile(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings EnableSafeMode(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings EnableTrace(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings EnableWatch(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings ForcePolling(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings LimitPosts(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, int? maxPosts) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings PublishFuture(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings RenderDrafts(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings RenderUnpublished(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings SetBaseUrl(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, string baseUrl) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings SetDestination(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, Cake.Core.IO.DirectoryPath destinationDirectoryPath) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings SetLayouts(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, Cake.Core.IO.DirectoryPath layoutsDirectory) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings SetLogLevel(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, Cake.Jekyll.JekyllLogLevel? logLevel) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings SetSource(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, Cake.Core.IO.DirectoryPath sourceDirectoryPath) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings SetWorkingDirectory(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, Cake.Core.IO.DirectoryPath path) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings UseLsi(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings UseStrictFrontMatter(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings WithConfiguration(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, params Cake.Core.IO.FilePath[] configurationFilePaths) { }
+        public static Cake.Jekyll.Commands.Build.JekyllBuildSettings WithPlugins(this Cake.Jekyll.Commands.Build.JekyllBuildSettings settings, params Cake.Core.IO.DirectoryPath[] pluginDirectoryPaths) { }
+    }
+}
+namespace Cake.Jekyll.Commands.Clean
+{
+    public class JekyllCleanSettings : Cake.Jekyll.JekyllSettings
+    {
+        public JekyllCleanSettings() { }
+        public string BaseUrl { get; set; }
+        public Cake.Jekyll.Core.IO.OneOrMoreFilePaths Configuration { get; set; }
+        public Cake.Core.IO.DirectoryPath Destination { get; set; }
+        public bool? DisableDiskCache { get; set; }
+        public bool? Drafts { get; set; }
+        public bool? ForcePolling { get; set; }
+        public bool? Future { get; set; }
+        public bool? IncrementalBuild { get; set; }
+        public Cake.Core.IO.DirectoryPath Layouts { get; set; }
+        public int? LimitPosts { get; set; }
+        public bool? LiquidProfile { get; set; }
+        public Cake.Jekyll.JekyllLogLevel? LogLevel { get; set; }
+        public bool? Lsi { get; set; }
+        public Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths Plugins { get; set; }
+        public bool? SafeMode { get; set; }
+        public Cake.Core.IO.DirectoryPath Source { get; set; }
+        public bool? StrictFrontMatter { get; set; }
+        public bool? Trace { get; set; }
+        public bool? Unpublished { get; set; }
+        public bool? Watch { get; set; }
+        protected override void EvaluateCore(Cake.Core.IO.ProcessArgumentBuilder args) { }
+    }
+    public static class JekyllCleanSettingsExtensions
+    {
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings DisableDiskCache(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool disable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings DoNotUseBundler(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings EnableIncrementalBuild(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings EnableLiquidProfile(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings EnableSafeMode(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings EnableTrace(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings EnableWatch(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings ForcePolling(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings LimitPosts(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, int? maxPosts) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings PublishFuture(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings RenderDrafts(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings RenderUnpublished(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings SetBaseUrl(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, string baseUrl) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings SetDestination(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, Cake.Core.IO.DirectoryPath destinationDirectoryPath) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings SetLayouts(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, Cake.Core.IO.DirectoryPath layoutsDirectory) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings SetLogLevel(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, Cake.Jekyll.JekyllLogLevel? logLevel) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings SetSource(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, Cake.Core.IO.DirectoryPath sourceDirectoryPath) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings SetWorkingDirectory(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, Cake.Core.IO.DirectoryPath path) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings UseLsi(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings UseStrictFrontMatter(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings WithConfiguration(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, params Cake.Core.IO.FilePath[] configurationFilePaths) { }
+        public static Cake.Jekyll.Commands.Clean.JekyllCleanSettings WithPlugins(this Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings, params Cake.Core.IO.DirectoryPath[] pluginDirectoryPaths) { }
+    }
+}
+namespace Cake.Jekyll.Commands.Doctor
+{
+    public class JekyllDoctorSettings : Cake.Jekyll.JekyllSettings
+    {
+        public JekyllDoctorSettings() { }
+        public Cake.Jekyll.Core.IO.OneOrMoreFilePaths Configuration { get; set; }
+        public Cake.Core.IO.DirectoryPath Destination { get; set; }
+        public Cake.Core.IO.DirectoryPath Layouts { get; set; }
+        public bool? LiquidProfile { get; set; }
+        public Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths Plugins { get; set; }
+        public bool? SafeMode { get; set; }
+        public Cake.Core.IO.DirectoryPath Source { get; set; }
+        public bool? Trace { get; set; }
+        protected override void EvaluateCore(Cake.Core.IO.ProcessArgumentBuilder args) { }
+    }
+    public static class JekyllDoctorSettingsExtensions
+    {
+        public static Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings DoNotUseBundler(this Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings EnableLiquidProfile(this Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings EnableSafeMode(this Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings EnableTrace(this Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings SetDestination(this Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings settings, Cake.Core.IO.DirectoryPath destinationDirectoryPath) { }
+        public static Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings SetLayouts(this Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings settings, Cake.Core.IO.DirectoryPath layoutsDirectory) { }
+        public static Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings SetSource(this Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings settings, Cake.Core.IO.DirectoryPath sourceDirectoryPath) { }
+        public static Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings SetWorkingDirectory(this Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings settings, Cake.Core.IO.DirectoryPath path) { }
+        public static Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings WithConfiguration(this Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings settings, params Cake.Core.IO.FilePath[] configurationFilePaths) { }
+        public static Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings WithPlugins(this Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings settings, params Cake.Core.IO.DirectoryPath[] pluginDirectoryPaths) { }
+    }
+}
+namespace Cake.Jekyll.Commands.New
+{
+    public class JekyllNewSettings : Cake.Jekyll.JekyllSettings
+    {
+        public JekyllNewSettings() { }
+        public bool? Blank { get; set; }
+        public Cake.Core.IO.DirectoryPath Destination { get; set; }
+        public bool? Force { get; set; }
+        public Cake.Core.IO.DirectoryPath Layouts { get; set; }
+        public bool? LiquidProfile { get; set; }
+        public Cake.Core.IO.DirectoryPath Path { get; }
+        public Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths Plugins { get; set; }
+        public bool? SafeMode { get; set; }
+        public bool? SkipBundle { get; set; }
+        public Cake.Core.IO.DirectoryPath Source { get; set; }
+        public bool? Trace { get; set; }
+        protected override void EvaluateCore(Cake.Core.IO.ProcessArgumentBuilder args) { }
+    }
+    public static class JekyllNewSettingsExtensions
+    {
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings DoNotUseBundler(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings EnableBlank(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings EnableForce(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings EnableLiquidProfile(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings EnableSafeMode(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings EnableTrace(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings SetDestination(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, Cake.Core.IO.DirectoryPath destinationDirectoryPath) { }
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings SetLayouts(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, Cake.Core.IO.DirectoryPath layoutsDirectory) { }
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings SetSource(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, Cake.Core.IO.DirectoryPath sourceDirectoryPath) { }
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings SetWorkingDirectory(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, Cake.Core.IO.DirectoryPath path) { }
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings SkipBundle(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.New.JekyllNewSettings WithPlugins(this Cake.Jekyll.Commands.New.JekyllNewSettings settings, params Cake.Core.IO.DirectoryPath[] pluginDirectoryPaths) { }
+    }
+}
+namespace Cake.Jekyll.Commands.NewTheme
+{
+    public class JekyllNewThemeSettings : Cake.Jekyll.JekyllSettings
+    {
+        public JekyllNewThemeSettings() { }
+        public bool? CodeOfConduct { get; set; }
+        public Cake.Core.IO.DirectoryPath Destination { get; set; }
+        public Cake.Core.IO.DirectoryPath Layouts { get; set; }
+        public bool? LiquidProfile { get; set; }
+        public string Name { get; }
+        public Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths Plugins { get; set; }
+        public bool? SafeMode { get; set; }
+        public Cake.Core.IO.DirectoryPath Source { get; set; }
+        public bool? Trace { get; set; }
+        protected override void EvaluateCore(Cake.Core.IO.ProcessArgumentBuilder args) { }
+    }
+    public static class JekyllNewThemeSettingsExtensions
+    {
+        public static Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings DoNotUseBundler(this Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings EnableLiquidProfile(this Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings EnableSafeMode(this Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings EnableTrace(this Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings IncludeCodeOfConduct(this Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings SetDestination(this Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings settings, Cake.Core.IO.DirectoryPath destinationDirectoryPath) { }
+        public static Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings SetLayouts(this Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings settings, Cake.Core.IO.DirectoryPath layoutsDirectory) { }
+        public static Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings SetSource(this Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings settings, Cake.Core.IO.DirectoryPath sourceDirectoryPath) { }
+        public static Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings SetWorkingDirectory(this Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings settings, Cake.Core.IO.DirectoryPath path) { }
+        public static Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings WithPlugins(this Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings settings, params Cake.Core.IO.DirectoryPath[] pluginDirectoryPaths) { }
+    }
+}
+namespace Cake.Jekyll.Commands.Serve
+{
+    public class JekyllServeSettings : Cake.Jekyll.JekyllSettings
+    {
+        public JekyllServeSettings() { }
+        public string BaseUrl { get; set; }
+        public Cake.Jekyll.Core.IO.OneOrMoreFilePaths Configuration { get; set; }
+        public Cake.Core.IO.DirectoryPath Destination { get; set; }
+        public bool? Detach { get; set; }
+        public bool? DisableDiskCache { get; set; }
+        public bool? Drafts { get; set; }
+        public bool? ForcePolling { get; set; }
+        public bool? Future { get; set; }
+        public string Hostname { get; set; }
+        public bool? IncrementalBuild { get; set; }
+        public Cake.Core.IO.DirectoryPath Layouts { get; set; }
+        public int? LimitPosts { get; set; }
+        public bool? LiquidProfile { get; set; }
+        public bool? LiveReload { get; set; }
+        public Cake.Jekyll.Core.OneOrMoreStrings LiveReloadIgnore { get; set; }
+        public System.TimeSpan? LiveReloadMaxDelay { get; set; }
+        public System.TimeSpan? LiveReloadMinDelay { get; set; }
+        public int? LiveReloadPort { get; set; }
+        public Cake.Jekyll.JekyllLogLevel? LogLevel { get; set; }
+        public bool? Lsi { get; set; }
+        public bool? OpenUrl { get; set; }
+        public Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths Plugins { get; set; }
+        public int? Port { get; set; }
+        public bool? SafeMode { get; set; }
+        public bool? ShowDirListing { get; set; }
+        public bool? SkipInitialBuild { get; set; }
+        public Cake.Core.IO.DirectoryPath Source { get; set; }
+        public Cake.Core.IO.FilePath SslCertificate { get; set; }
+        public Cake.Core.IO.FilePath SslKey { get; set; }
+        public bool? StrictFrontMatter { get; set; }
+        public bool? Trace { get; set; }
+        public bool? Unpublished { get; set; }
+        public bool? Watch { get; set; }
+        protected override void EvaluateCore(Cake.Core.IO.ProcessArgumentBuilder args) { }
+    }
+    public static class JekyllServeSettingsExtensions
+    {
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings Detach(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings DisableDiskCache(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool disable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings DoNotUseBundler(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings EnableIncrementalBuild(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings EnableLiquidProfile(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings EnableSafeMode(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings EnableTrace(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings EnableWatch(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings ForcePolling(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings LimitPosts(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, int? maxPosts) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings OpenUrl(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings PublishFuture(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings RenderDrafts(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings RenderUnpublished(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SetBaseUrl(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, string baseUrl) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SetDestination(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, Cake.Core.IO.DirectoryPath destinationDirectoryPath) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SetHostname(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, string hostname) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SetLayouts(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, Cake.Core.IO.DirectoryPath layoutsDirectory) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SetLiveReloadMaxDelay(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, System.TimeSpan maxDelay) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SetLiveReloadMinDelay(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, System.TimeSpan minDelay) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SetLiveReloadPort(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, int? port) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SetLogLevel(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, Cake.Jekyll.JekyllLogLevel? logLevel) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SetPort(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, int? port) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SetSource(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, Cake.Core.IO.DirectoryPath sourceDirectoryPath) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SetWorkingDirectory(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, Cake.Core.IO.DirectoryPath path) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings ShowDirListing(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings SkipInitialBuild(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings UseLiveReload(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings UseLsi(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings UseSslCertificate(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, Cake.Core.IO.FilePath sslCertificate) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings UseSslKey(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, Cake.Core.IO.FilePath sslKey) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings UseStrictFrontMatter(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, bool enable = true) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings WithConfiguration(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, params Cake.Core.IO.FilePath[] configurationFilePaths) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings WithLiveReloadIgnore(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, params string[] globPatterns) { }
+        public static Cake.Jekyll.Commands.Serve.JekyllServeSettings WithPlugins(this Cake.Jekyll.Commands.Serve.JekyllServeSettings settings, params Cake.Core.IO.DirectoryPath[] pluginDirectoryPaths) { }
+    }
+}
+namespace Cake.Jekyll.Commands.Version
+{
+    public class JekyllVersionSettings : Cake.Jekyll.JekyllSettings
+    {
+        public JekyllVersionSettings() { }
+    }
+    public static class JekyllVersionSettingsExtensions
+    {
+        public static Cake.Jekyll.Commands.Version.JekyllVersionSettings DoNotUseBundler(this Cake.Jekyll.Commands.Version.JekyllVersionSettings settings, bool? enable = true) { }
+        public static Cake.Jekyll.Commands.Version.JekyllVersionSettings SetWorkingDirectory(this Cake.Jekyll.Commands.Version.JekyllVersionSettings settings, Cake.Core.IO.DirectoryPath path) { }
+    }
+}
+namespace Cake.Jekyll.Core.IO
+{
+    public class OneOrMoreDirectoryPaths : System.Collections.Generic.IEnumerable<Cake.Core.IO.DirectoryPath>, System.Collections.IEnumerable
+    {
+        public OneOrMoreDirectoryPaths(Cake.Core.IO.DirectoryPath directoryPath) { }
+        public OneOrMoreDirectoryPaths(System.Collections.Generic.IEnumerable<Cake.Core.IO.DirectoryPath> directoryPaths) { }
+        public int Count { get; }
+        public Cake.Core.IO.DirectoryPath this[int index] { get; }
+        public System.Collections.Generic.IEnumerator<Cake.Core.IO.DirectoryPath> GetEnumerator() { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths op_Implicit(Cake.Core.IO.DirectoryPath directoryPath) { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths op_Implicit(Cake.Core.IO.DirectoryPath[] directoryPaths) { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths op_Implicit(System.Collections.Generic.List<Cake.Core.IO.DirectoryPath> directoryPaths) { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths op_Implicit(System.Collections.Generic.List<string> directoryPaths) { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths op_Implicit(string directoryPath) { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths op_Implicit(string[] directoryPaths) { }
+    }
+    public class OneOrMoreFilePaths : System.Collections.Generic.IEnumerable<Cake.Core.IO.FilePath>, System.Collections.IEnumerable
+    {
+        public OneOrMoreFilePaths(Cake.Core.IO.FilePath filePath) { }
+        public OneOrMoreFilePaths(System.Collections.Generic.IEnumerable<Cake.Core.IO.FilePath> filePaths) { }
+        public int Count { get; }
+        public Cake.Core.IO.FilePath this[int index] { get; }
+        public System.Collections.Generic.IEnumerator<Cake.Core.IO.FilePath> GetEnumerator() { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreFilePaths op_Implicit(Cake.Core.IO.FilePath filePath) { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreFilePaths op_Implicit(Cake.Core.IO.FilePath[] filePaths) { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreFilePaths op_Implicit(System.Collections.Generic.List<Cake.Core.IO.FilePath> filePaths) { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreFilePaths op_Implicit(System.Collections.Generic.List<string> filePaths) { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreFilePaths op_Implicit(string filePath) { }
+        public static Cake.Jekyll.Core.IO.OneOrMoreFilePaths op_Implicit(string[] filePaths) { }
+    }
+}
+namespace Cake.Jekyll.Core
+{
+    public class OneOrMoreStrings : System.Collections.Generic.IEnumerable<string>, System.Collections.IEnumerable
+    {
+        public OneOrMoreStrings(System.Collections.Generic.IEnumerable<string> values) { }
+        public OneOrMoreStrings(string value) { }
+        public int Count { get; }
+        public string this[int index] { get; }
+        public System.Collections.Generic.IEnumerator<string> GetEnumerator() { }
+        public static Cake.Jekyll.Core.OneOrMoreStrings op_Implicit(System.Collections.Generic.List<string> values) { }
+        public static Cake.Jekyll.Core.OneOrMoreStrings op_Implicit(string value) { }
+        public static Cake.Jekyll.Core.OneOrMoreStrings op_Implicit(string[] values) { }
+    }
+}
+namespace Cake.Jekyll
+{
+    [Cake.Core.Annotations.CakeAliasCategory("Jekyll")]
+    [Cake.Core.Annotations.CakeNamespaceImport("Cake.Jekyll.Commands.Build")]
+    public static class JekyllBuildAliases
+    {
+        [Cake.Core.Annotations.CakeAliasCategory("Build")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllBuild(this Cake.Core.ICakeContext context) { }
+        [Cake.Core.Annotations.CakeAliasCategory("Build")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllBuild(this Cake.Core.ICakeContext context, Cake.Jekyll.Commands.Build.JekyllBuildSettings settings) { }
+        [Cake.Core.Annotations.CakeAliasCategory("Build")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllBuild(this Cake.Core.ICakeContext context, System.Action<Cake.Jekyll.Commands.Build.JekyllBuildSettings> configurator) { }
+    }
+    [Cake.Core.Annotations.CakeAliasCategory("Jekyll")]
+    [Cake.Core.Annotations.CakeNamespaceImport("Cake.Jekyll.Commands.Clean")]
+    public static class JekyllCleanAliases
+    {
+        [Cake.Core.Annotations.CakeAliasCategory("Clean")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllClean(this Cake.Core.ICakeContext context) { }
+        [Cake.Core.Annotations.CakeAliasCategory("Clean")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllClean(this Cake.Core.ICakeContext context, Cake.Jekyll.Commands.Clean.JekyllCleanSettings settings) { }
+        [Cake.Core.Annotations.CakeAliasCategory("Clean")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllClean(this Cake.Core.ICakeContext context, System.Action<Cake.Jekyll.Commands.Clean.JekyllCleanSettings> configurator) { }
+    }
+    [Cake.Core.Annotations.CakeAliasCategory("Jekyll")]
+    [Cake.Core.Annotations.CakeNamespaceImport("Cake.Jekyll.Commands.Doctor")]
+    public static class JekyllDoctorAliases
+    {
+        [Cake.Core.Annotations.CakeAliasCategory("Doctor")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllDoctor(this Cake.Core.ICakeContext context) { }
+        [Cake.Core.Annotations.CakeAliasCategory("Doctor")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllDoctor(this Cake.Core.ICakeContext context, Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings settings) { }
+        [Cake.Core.Annotations.CakeAliasCategory("Doctor")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllDoctor(this Cake.Core.ICakeContext context, System.Action<Cake.Jekyll.Commands.Doctor.JekyllDoctorSettings> configurator) { }
+    }
+    public enum JekyllLogLevel
+    {
+        Default = 0,
+        Quiet = 1,
+        Verbose = 2,
+    }
+    [Cake.Core.Annotations.CakeAliasCategory("Jekyll")]
+    [Cake.Core.Annotations.CakeNamespaceImport("Cake.Jekyll.Commands.New")]
+    public static class JekyllNewAliases
+    {
+        [Cake.Core.Annotations.CakeAliasCategory("New")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllNew(this Cake.Core.ICakeContext context, Cake.Core.IO.DirectoryPath path) { }
+        [Cake.Core.Annotations.CakeAliasCategory("New")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllNew(this Cake.Core.ICakeContext context, Cake.Core.IO.DirectoryPath path, Cake.Jekyll.Commands.New.JekyllNewSettings settings) { }
+        [Cake.Core.Annotations.CakeAliasCategory("New")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllNew(this Cake.Core.ICakeContext context, Cake.Core.IO.DirectoryPath path, System.Action<Cake.Jekyll.Commands.New.JekyllNewSettings> configurator) { }
+    }
+    [Cake.Core.Annotations.CakeAliasCategory("Jekyll")]
+    [Cake.Core.Annotations.CakeNamespaceImport("Cake.Jekyll.Commands.NewTheme")]
+    public static class JekyllNewThemeAliases
+    {
+        [Cake.Core.Annotations.CakeAliasCategory("NewTheme")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllNewTheme(this Cake.Core.ICakeContext context, string name) { }
+        [Cake.Core.Annotations.CakeAliasCategory("NewTheme")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllNewTheme(this Cake.Core.ICakeContext context, string name, Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings settings) { }
+        [Cake.Core.Annotations.CakeAliasCategory("NewTheme")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllNewTheme(this Cake.Core.ICakeContext context, string name, System.Action<Cake.Jekyll.Commands.NewTheme.JekyllNewThemeSettings> configurator) { }
+    }
+    [Cake.Core.Annotations.CakeAliasCategory("Jekyll")]
+    [Cake.Core.Annotations.CakeNamespaceImport("Cake.Jekyll.Commands.Serve")]
+    public static class JekyllServeAliases
+    {
+        [Cake.Core.Annotations.CakeAliasCategory("Serve")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllServe(this Cake.Core.ICakeContext context) { }
+        [Cake.Core.Annotations.CakeAliasCategory("Serve")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllServe(this Cake.Core.ICakeContext context, Cake.Jekyll.Commands.Serve.JekyllServeSettings settings) { }
+        [Cake.Core.Annotations.CakeAliasCategory("Serve")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllServe(this Cake.Core.ICakeContext context, System.Action<Cake.Jekyll.Commands.Serve.JekyllServeSettings> configurator) { }
+    }
+    public abstract class JekyllSettings : Cake.Core.Tooling.ToolSettings
+    {
+        protected JekyllSettings(string command) { }
+        protected string Command { get; }
+        public bool? DoNotUseBundler { get; set; }
+        protected void ApplyOption(Cake.Core.IO.ProcessArgumentBuilder args, Cake.Jekyll.JekyllLogLevel? logLevel) { }
+        protected void ApplyOption(Cake.Core.IO.ProcessArgumentBuilder args, string optionName, Cake.Jekyll.Core.IO.OneOrMoreDirectoryPaths optionValue) { }
+        protected void ApplyOption(Cake.Core.IO.ProcessArgumentBuilder args, string optionName, Cake.Jekyll.Core.IO.OneOrMoreFilePaths optionValue) { }
+        protected void ApplyOption(Cake.Core.IO.ProcessArgumentBuilder args, string optionName, Cake.Jekyll.Core.OneOrMoreStrings optionValue) { }
+        protected void ApplyOption(Cake.Core.IO.ProcessArgumentBuilder args, string optionName, string value) { }
+        protected void ApplyOption(Cake.Core.IO.ProcessArgumentBuilder args, string optionName, System.TimeSpan? optionValue) { }
+        protected void ApplyOption(Cake.Core.IO.ProcessArgumentBuilder args, string optionName, bool? optionValue) { }
+        protected void ApplyOption(Cake.Core.IO.ProcessArgumentBuilder args, string optionName, int? optionValue) { }
+        protected void ApplyValue(Cake.Core.IO.ProcessArgumentBuilder args, string value) { }
+        protected virtual void EvaluateCore(Cake.Core.IO.ProcessArgumentBuilder args) { }
+    }
+    public abstract class JekyllTool<TSettings> : Cake.Core.Tooling.Tool<TSettings>
+        where TSettings : Cake.Jekyll.JekyllSettings
+    {
+        protected JekyllTool(Cake.Core.IO.IFileSystem fileSystem, Cake.Core.ICakeEnvironment environment, Cake.Core.IO.IProcessRunner processRunner, Cake.Core.Tooling.IToolLocator tools, Cake.Core.Diagnostics.ICakeLog log) { }
+        public Cake.Core.Diagnostics.ICakeLog CakeLog { get; }
+        protected Cake.Core.IO.ProcessArgumentBuilder GetArguments(TSettings settings) { }
+        protected override sealed System.Collections.Generic.IEnumerable<string> GetToolExecutableNames() { }
+        protected override sealed string GetToolName() { }
+        protected void RunCore(TSettings settings) { }
+        protected void RunCore(TSettings settings, Cake.Core.IO.ProcessSettings processSettings, System.Action<Cake.Core.IO.IProcess> postAction) { }
+    }
+    [Cake.Core.Annotations.CakeAliasCategory("Jekyll")]
+    [Cake.Core.Annotations.CakeNamespaceImport("Cake.Jekyll.Commands.Version")]
+    public static class JekyllVersionAliases
+    {
+        [Cake.Core.Annotations.CakeAliasCategory("Version")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllVersion(this Cake.Core.ICakeContext context) { }
+        [Cake.Core.Annotations.CakeAliasCategory("Version")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllVersion(this Cake.Core.ICakeContext context, Cake.Jekyll.Commands.Version.JekyllVersionSettings settings) { }
+        [Cake.Core.Annotations.CakeAliasCategory("Version")]
+        [Cake.Core.Annotations.CakeMethodAlias]
+        public static void JekyllVersion(this Cake.Core.ICakeContext context, System.Action<Cake.Jekyll.Commands.Version.JekyllVersionSettings> configurator) { }
+    }
+    public static class LogLevelExtensions
+    {
+        public static Cake.Jekyll.JekyllLogLevel ToJekyllLogLevel(this Cake.Core.Diagnostics.LogLevel logLevel) { }
+        public static Cake.Jekyll.JekyllLogLevel ToJekyllLogLevel(this Cake.Core.Diagnostics.LogLevel? logLevel) { }
+    }
+    public static class VerbosityExtensions
+    {
+        public static Cake.Jekyll.JekyllLogLevel ToJekyllLogLevel(this Cake.Core.Diagnostics.Verbosity verbosity) { }
+        public static Cake.Jekyll.JekyllLogLevel ToJekyllLogLevel(this Cake.Core.Diagnostics.Verbosity? verbosity) { }
+    }
+}
