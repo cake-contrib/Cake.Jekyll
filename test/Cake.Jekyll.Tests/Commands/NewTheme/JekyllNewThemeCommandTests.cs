@@ -18,189 +18,188 @@ using System;
 using FluentAssertions;
 using Xunit;
 
-namespace Cake.Jekyll.Tests.Commands.NewTheme
+namespace Cake.Jekyll.Tests.Commands.NewTheme;
+
+public class JekyllNewThemeCommandTests
 {
-    public class JekyllNewThemeCommandTests
+    [Fact]
+    public void Should_Throw_If_Settings_Are_Null()
     {
-        [Fact]
-        public void Should_Throw_If_Settings_Are_Null()
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = null,
-            };
+            Settings = null,
+        };
 
-            Action action = () => fixture.Run();
+        Action action = () => fixture.Run();
 
-            action.Should().Throw<ArgumentNullException>()
-                .Which.ParamName.Should().Be("settings");
-        }
+        action.Should().Throw<ArgumentNullException>()
+            .Which.ParamName.Should().Be("settings");
+    }
 
-        [Fact]
-        public void Should_Add_Default_Arguments()
+    [Fact]
+    public void Should_Add_Default_Arguments()
+    {
+        var fixture = new JekyllNewThemeCommandFixture();
+
+        var result = fixture.Run();
+
+        result.Args.Should().Be("exec jekyll new-theme");
+    }
+
+    [Fact]
+    public void Should_Add_Default_Arguments_When_Bundler_Is_Disabled()
+    {
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture();
+            Settings = { DoNotUseBundler = true },
+        };
 
-            var result = fixture.Run();
+        fixture.GivenJekyllToolExist();
 
-            result.Args.Should().Be("exec jekyll new-theme");
-        }
+        var result = fixture.Run();
 
-        [Fact]
-        public void Should_Add_Default_Arguments_When_Bundler_Is_Disabled()
+        result.Args.Should().Be("new-theme");
+    }
+
+    [Fact]
+    public void Should_Add_Name_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = { DoNotUseBundler = true },
-            };
+            Settings = { Name = @"mytheme" },
+        };
 
-            fixture.GivenJekyllToolExist();
+        var result = fixture.Run();
 
-            var result = fixture.Run();
+        result.Args.Should().Be(@"exec jekyll new-theme ""mytheme""");
+    }
 
-            result.Args.Should().Be("new-theme");
-        }
-
-        [Fact]
-        public void Should_Add_Name_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --code-of-conduct")]
+    [Theory]
+    public void Should_Add_Blank_To_Arguments_If_Not_Null(bool? codeOfConduct, string expected)
+    {
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = { Name = @"mytheme" },
-            };
+            Settings = { CodeOfConduct = codeOfConduct },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new-theme ""mytheme""");
-        }
+        result.Args.Should().Be($"exec jekyll new-theme{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --code-of-conduct")]
-        [Theory]
-        public void Should_Add_Blank_To_Arguments_If_Not_Null(bool? codeOfConduct, string expected)
+    [Fact]
+    public void Should_Add_Source_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = { CodeOfConduct = codeOfConduct },
-            };
+            Settings = { Source = @"c:\sourceDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll new-theme{expected}");
-        }
+        result.Args.Should().Be(@"exec jekyll new-theme --source ""c:/sourceDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Source_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Destination_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = { Source = @"c:\sourceDir" },
-            };
+            Settings = { Destination = @"c:\destinationDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new-theme --source ""c:/sourceDir""");
-        }
+        result.Args.Should().Be(@"exec jekyll new-theme --destination ""c:/destinationDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Destination_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --safe")]
+    [Theory]
+    public void Should_Add_Safe_To_Arguments_If_Not_Null(bool? safeMode, string expected)
+    {
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = { Destination = @"c:\destinationDir" },
-            };
+            Settings = { SafeMode = safeMode },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new-theme --destination ""c:/destinationDir""");
-        }
+        result.Args.Should().Be($"exec jekyll new-theme{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --safe")]
-        [Theory]
-        public void Should_Add_Safe_To_Arguments_If_Not_Null(bool? safeMode, string expected)
+    [Fact]
+    public void Should_Add_Single_Plugin_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = { SafeMode = safeMode },
-            };
+            Settings = { Plugins = @"c:\pluginDir\" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll new-theme{expected}");
-        }
+        result.Args.Should().Be(@"exec jekyll new-theme --plugins ""c:/pluginDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Single_Plugin_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Multiple_Plugin_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = { Plugins = @"c:\pluginDir\" },
-            };
+            Settings = { Plugins = new [] { @"c:\pluginDir1", @"c:\pluginDir2" } },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new-theme --plugins ""c:/pluginDir""");
-        }
+        result.Args.Should().Be(@"exec jekyll new-theme --plugins ""c:/pluginDir1"" ""c:/pluginDir2""");
+    }
 
-        [Fact]
-        public void Should_Add_Multiple_Plugin_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Layouts_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = { Plugins = new [] { @"c:\pluginDir1", @"c:\pluginDir2" } },
-            };
+            Settings = { Layouts = @"c:\layoutsDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new-theme --plugins ""c:/pluginDir1"" ""c:/pluginDir2""");
-        }
+        result.Args.Should().Be(@"exec jekyll new-theme --layouts ""c:/layoutsDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Layouts_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --profile")]
+    [Theory]
+    public void Should_Add_LiquidProfile_To_Arguments_If_Not_Null(bool? liquidProfile, string expected)
+    {
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = { Layouts = @"c:\layoutsDir" },
-            };
+            Settings = { LiquidProfile = liquidProfile },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new-theme --layouts ""c:/layoutsDir""");
-        }
+        result.Args.Should().Be($"exec jekyll new-theme{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --profile")]
-        [Theory]
-        public void Should_Add_LiquidProfile_To_Arguments_If_Not_Null(bool? liquidProfile, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --trace")]
+    [Theory]
+    public void Should_Add_Trace_To_Arguments_If_Not_Null(bool? trace, string expected)
+    {
+        var fixture = new JekyllNewThemeCommandFixture
         {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = { LiquidProfile = liquidProfile },
-            };
+            Settings = { Trace = trace },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll new-theme{expected}");
-        }
-
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --trace")]
-        [Theory]
-        public void Should_Add_Trace_To_Arguments_If_Not_Null(bool? trace, string expected)
-        {
-            var fixture = new JekyllNewThemeCommandFixture
-            {
-                Settings = { Trace = trace },
-            };
-
-            var result = fixture.Run();
-
-            result.Args.Should().Be($"exec jekyll new-theme{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll new-theme{expected}");
     }
 }

@@ -17,14 +17,13 @@
 using Cake.Jekyll.Commands.NewTheme;
 using Cake.Jekyll.Tests.Support;
 
-namespace Cake.Jekyll.Tests.Commands.NewTheme
+namespace Cake.Jekyll.Tests.Commands.NewTheme;
+
+internal sealed class JekyllNewThemeCommandFixture : JekyllFixture<JekyllNewThemeSettings>
 {
-    internal sealed class JekyllNewThemeCommandFixture : JekyllFixture<JekyllNewThemeSettings>
+    protected override void RunTool()
     {
-        protected override void RunTool()
-        {
-            var tool = new JekyllNewThemeCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
-            tool.NewTheme(Settings);
-        }
+        var tool = new JekyllNewThemeCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
+        tool.NewTheme(Settings);
     }
 }

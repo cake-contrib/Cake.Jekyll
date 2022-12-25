@@ -19,146 +19,145 @@ using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Jekyll.Commands.NewTheme;
 
-namespace Cake.Jekyll
+namespace Cake.Jekyll;
+
+/// <summary>
+/// <para>Functions to execute the <see href="https://jekyllrb.com">Jekyll</see> commands in Cake builds.</para>
+/// <para>
+/// In order to use this Cake addin, Bundle and/or Jekyll must be installed.
+/// </para>
+/// <para>
+/// In order to use it, add the following to your Cake build script:
+/// <code>
+/// <![CDATA[
+/// #addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+/// ]]>
+/// </code>
+///
+/// Where `x.y.z` is the version of the Cake.Jekyll package to use (latest version is recommended).
+/// </para>
+/// </summary>
+[CakeAliasCategory("Jekyll")]
+[CakeNamespaceImport("Cake.Jekyll.Commands.NewTheme")]
+public static class JekyllNewThemeAliases
 {
     /// <summary>
-    /// <para>Functions to execute the <see href="https://jekyllrb.com">Jekyll</see> commands in Cake builds.</para>
-    /// <para>
-    /// In order to use this Cake addin, Bundle and/or Jekyll must be installed.
-    /// </para>
-    /// <para>
-    /// In order to use it, add the following to your Cake build script:
+    /// Create a new Jekyll theme scaffold using the default settings.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="name">The name of the theme.</param>
+    /// <example>
     /// <code>
     /// <![CDATA[
-    /// #addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+    /// JekyllNewTheme("mytheme");
     /// ]]>
     /// </code>
-    ///
-    /// Where `x.y.z` is the version of the Cake.Jekyll package to use (latest version is recommended).
-    /// </para>
-    /// </summary>
-    [CakeAliasCategory("Jekyll")]
-    [CakeNamespaceImport("Cake.Jekyll.Commands.NewTheme")]
-    public static class JekyllNewThemeAliases
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("NewTheme")]
+    public static void JekyllNewTheme(this ICakeContext context, string name)
     {
-        /// <summary>
-        /// Create a new Jekyll theme scaffold using the default settings.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="name">The name of the theme.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// JekyllNewTheme("mytheme");
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("NewTheme")]
-        public static void JekyllNewTheme(this ICakeContext context, string name)
+        if (context is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
-            }
-
-            context.JekyllNewTheme(name, new JekyllNewThemeSettings());
+            throw new ArgumentNullException(nameof(context));
         }
 
-        /// <summary>
-        /// Create a new Jekyll theme scaffold using the settings returned by a configurator.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="name">The name of the theme.</param>
-        /// <param name="configurator">The settings configurator.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// JekyllNewTheme("mytheme", settings => settings
-        ///     .IncludeCodeOfConduct()
-        /// );
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("NewTheme")]
-        public static void JekyllNewTheme(this ICakeContext context, string name, Action<JekyllNewThemeSettings> configurator)
+        if (string.IsNullOrWhiteSpace(name))
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
-            }
-
-            if (configurator is null)
-            {
-                throw new ArgumentNullException(nameof(configurator));
-            }
-
-            var settings = new JekyllNewThemeSettings
-            {
-                Name = name,
-            };
-
-            configurator(settings);
-
-            context.JekyllNewTheme(name, settings);
+            throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
         }
 
-        /// <summary>
-        /// Create a new Jekyll theme scaffold using the specified settings.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="name">The name of the theme.</param>
-        /// <param name="settings">The settings.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// var settings = new JekyllNewThemeSettings 
-        /// {
-        ///     CodeOfConduct = true,
-        /// };
-        /// 
-        /// JekyllNewTheme("mytheme", settings);
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("NewTheme")]
-        public static void JekyllNewTheme(this ICakeContext context, string name, JekyllNewThemeSettings settings)
+        context.JekyllNewTheme(name, new JekyllNewThemeSettings());
+    }
+
+    /// <summary>
+    /// Create a new Jekyll theme scaffold using the settings returned by a configurator.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="name">The name of the theme.</param>
+    /// <param name="configurator">The settings configurator.</param>
+    /// <example>
+    /// <code>
+    /// <![CDATA[
+    /// JekyllNewTheme("mytheme", settings => settings
+    ///     .IncludeCodeOfConduct()
+    /// );
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("NewTheme")]
+    public static void JekyllNewTheme(this ICakeContext context, string name, Action<JekyllNewThemeSettings> configurator)
+    {
+        if (context is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
-            }
-
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            AddinInformation.LogVersionInformation(context.Log);
-
-            settings.Name = name;
-
-            var command = new JekyllNewThemeCommand(context.FileSystem, context.Environment, context.ProcessRunner,
-                context.Tools, context.Log);
-
-            command.NewTheme(settings);
+            throw new ArgumentNullException(nameof(context));
         }
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+        }
+
+        if (configurator is null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        var settings = new JekyllNewThemeSettings
+        {
+            Name = name,
+        };
+
+        configurator(settings);
+
+        context.JekyllNewTheme(name, settings);
+    }
+
+    /// <summary>
+    /// Create a new Jekyll theme scaffold using the specified settings.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="name">The name of the theme.</param>
+    /// <param name="settings">The settings.</param>
+    /// <example>
+    /// <code>
+    /// <![CDATA[
+    /// var settings = new JekyllNewThemeSettings 
+    /// {
+    ///     CodeOfConduct = true,
+    /// };
+    /// 
+    /// JekyllNewTheme("mytheme", settings);
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("NewTheme")]
+    public static void JekyllNewTheme(this ICakeContext context, string name, JekyllNewThemeSettings settings)
+    {
+        if (context is null)
+        {
+            throw new ArgumentNullException(nameof(context));
+        }
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+        }
+
+        if (settings is null)
+        {
+            throw new ArgumentNullException(nameof(settings));
+        }
+
+        AddinInformation.LogVersionInformation(context.Log);
+
+        settings.Name = name;
+
+        var command = new JekyllNewThemeCommand(context.FileSystem, context.Environment, context.ProcessRunner,
+            context.Tools, context.Log);
+
+        command.NewTheme(settings);
     }
 }

@@ -19,120 +19,119 @@ using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Jekyll.Commands.Version;
 
-namespace Cake.Jekyll
+namespace Cake.Jekyll;
+
+/// <summary>
+/// <para>Functions to execute the <see href="https://jekyllrb.com">Jekyll</see> commands in Cake builds.</para>
+/// <para>
+/// In order to use this Cake addin, Bundle and/or Jekyll must be installed.
+/// </para>
+/// <para>
+/// In order to use it, add the following to your Cake build script:
+/// <code>
+/// <![CDATA[
+/// #addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+/// ]]>
+/// </code>
+///
+/// Where `x.y.z` is the version of the Cake.Jekyll package to use (latest version is recommended).
+/// </para>
+/// </summary>
+[CakeAliasCategory("Jekyll")]
+[CakeNamespaceImport("Cake.Jekyll.Commands.Version")]
+public static class JekyllVersionAliases
 {
     /// <summary>
-    /// <para>Functions to execute the <see href="https://jekyllrb.com">Jekyll</see> commands in Cake builds.</para>
-    /// <para>
-    /// In order to use this Cake addin, Bundle and/or Jekyll must be installed.
-    /// </para>
-    /// <para>
-    /// In order to use it, add the following to your Cake build script:
+    /// Print the name and version.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <example>
     /// <code>
     /// <![CDATA[
-    /// #addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+    /// JekyllVersion();
     /// ]]>
     /// </code>
-    ///
-    /// Where `x.y.z` is the version of the Cake.Jekyll package to use (latest version is recommended).
-    /// </para>
-    /// </summary>
-    [CakeAliasCategory("Jekyll")]
-    [CakeNamespaceImport("Cake.Jekyll.Commands.Version")]
-    public static class JekyllVersionAliases
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Version")]
+    public static void JekyllVersion(this ICakeContext context)
     {
-        /// <summary>
-        /// Print the name and version.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// JekyllVersion();
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("Version")]
-        public static void JekyllVersion(this ICakeContext context)
+        if (context is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            context.JekyllVersion(new JekyllVersionSettings());
+            throw new ArgumentNullException(nameof(context));
         }
 
-        /// <summary>
-        /// Print the name and version using the settings returned by a configurator.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="configurator">The settings configurator.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// JekyllVersion(settings => settings.DoNotUseBundler());
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("Version")]
-        public static void JekyllVersion(this ICakeContext context, Action<JekyllVersionSettings> configurator)
+        context.JekyllVersion(new JekyllVersionSettings());
+    }
+
+    /// <summary>
+    /// Print the name and version using the settings returned by a configurator.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="configurator">The settings configurator.</param>
+    /// <example>
+    /// <code>
+    /// <![CDATA[
+    /// JekyllVersion(settings => settings.DoNotUseBundler());
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Version")]
+    public static void JekyllVersion(this ICakeContext context, Action<JekyllVersionSettings> configurator)
+    {
+        if (context is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (configurator is null)
-            {
-                throw new ArgumentNullException(nameof(configurator));
-            }
-
-            var settings = new JekyllVersionSettings();
-            configurator(settings);
-
-            context.JekyllVersion(settings);
+            throw new ArgumentNullException(nameof(context));
         }
 
-        /// <summary>
-        /// Print the name and version using the specified settings.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="settings">The settings.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// var settings = new JekyllVersionSettings 
-        /// {
-        ///     DoNotUseBundler = true,
-        /// };
-        /// 
-        /// JekyllVersion(settings);
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("Version")]
-        public static void JekyllVersion(this ICakeContext context, JekyllVersionSettings settings)
+        if (configurator is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            AddinInformation.LogVersionInformation(context.Log);
-
-            var command = new JekyllVersionCommand(context.FileSystem, context.Environment, context.ProcessRunner,
-                context.Tools, context.Log);
-
-            command.Version(settings);
+            throw new ArgumentNullException(nameof(configurator));
         }
+
+        var settings = new JekyllVersionSettings();
+        configurator(settings);
+
+        context.JekyllVersion(settings);
+    }
+
+    /// <summary>
+    /// Print the name and version using the specified settings.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="settings">The settings.</param>
+    /// <example>
+    /// <code>
+    /// <![CDATA[
+    /// var settings = new JekyllVersionSettings 
+    /// {
+    ///     DoNotUseBundler = true,
+    /// };
+    /// 
+    /// JekyllVersion(settings);
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Version")]
+    public static void JekyllVersion(this ICakeContext context, JekyllVersionSettings settings)
+    {
+        if (context is null)
+        {
+            throw new ArgumentNullException(nameof(context));
+        }
+
+        if (settings is null)
+        {
+            throw new ArgumentNullException(nameof(settings));
+        }
+
+        AddinInformation.LogVersionInformation(context.Log);
+
+        var command = new JekyllVersionCommand(context.FileSystem, context.Environment, context.ProcessRunner,
+            context.Tools, context.Log);
+
+        command.Version(settings);
     }
 }

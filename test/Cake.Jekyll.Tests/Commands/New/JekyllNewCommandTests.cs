@@ -18,221 +18,220 @@ using System;
 using FluentAssertions;
 using Xunit;
 
-namespace Cake.Jekyll.Tests.Commands.New
+namespace Cake.Jekyll.Tests.Commands.New;
+
+public class JekyllNewCommandTests
 {
-    public class JekyllNewCommandTests
+    [Fact]
+    public void Should_Throw_If_Settings_Are_Null()
     {
-        [Fact]
-        public void Should_Throw_If_Settings_Are_Null()
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = null,
-            };
+            Settings = null,
+        };
 
-            Action action = () => fixture.Run();
+        Action action = () => fixture.Run();
 
-            action.Should().Throw<ArgumentNullException>()
-                .Which.ParamName.Should().Be("settings");
-        }
+        action.Should().Throw<ArgumentNullException>()
+            .Which.ParamName.Should().Be("settings");
+    }
 
-        [Fact]
-        public void Should_Add_Default_Arguments()
+    [Fact]
+    public void Should_Add_Default_Arguments()
+    {
+        var fixture = new JekyllNewCommandFixture();
+
+        var result = fixture.Run();
+
+        result.Args.Should().Be("exec jekyll new");
+    }
+
+    [Fact]
+    public void Should_Add_Default_Arguments_When_Bundler_Is_Disabled()
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture();
+            Settings = { DoNotUseBundler = true },
+        };
 
-            var result = fixture.Run();
+        fixture.GivenJekyllToolExist();
 
-            result.Args.Should().Be("exec jekyll new");
-        }
+        var result = fixture.Run();
 
-        [Fact]
-        public void Should_Add_Default_Arguments_When_Bundler_Is_Disabled()
+        result.Args.Should().Be("new");
+    }
+
+    [Fact]
+    public void Should_Add_Path_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { DoNotUseBundler = true },
-            };
+            Settings = { Path = @"c:\newSiteDir" },
+        };
 
-            fixture.GivenJekyllToolExist();
+        var result = fixture.Run();
 
-            var result = fixture.Run();
+        result.Args.Should().Be(@"exec jekyll new ""c:/newSiteDir""");
+    }
 
-            result.Args.Should().Be("new");
-        }
-
-        [Fact]
-        public void Should_Add_Path_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --force")]
+    [Theory]
+    public void Should_Add_Force_To_Arguments_If_Not_Null(bool? force, string expected)
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { Path = @"c:\newSiteDir" },
-            };
+            Settings = { Force = force },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new ""c:/newSiteDir""");
-        }
+        result.Args.Should().Be($"exec jekyll new{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --force")]
-        [Theory]
-        public void Should_Add_Force_To_Arguments_If_Not_Null(bool? force, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --blank")]
+    [Theory]
+    public void Should_Add_Blank_To_Arguments_If_Not_Null(bool? blank, string expected)
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { Force = force },
-            };
+            Settings = { Blank = blank },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll new{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll new{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --blank")]
-        [Theory]
-        public void Should_Add_Blank_To_Arguments_If_Not_Null(bool? blank, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --skip-bundle")]
+    [Theory]
+    public void Should_Add_SkipBundle_To_Arguments_If_Not_Null(bool? skipBundle, string expected)
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { Blank = blank },
-            };
+            Settings = { SkipBundle = skipBundle },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll new{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll new{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --skip-bundle")]
-        [Theory]
-        public void Should_Add_SkipBundle_To_Arguments_If_Not_Null(bool? skipBundle, string expected)
+    [Fact]
+    public void Should_Add_Source_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { SkipBundle = skipBundle },
-            };
+            Settings = { Source = @"c:\sourceDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll new{expected}");
-        }
+        result.Args.Should().Be(@"exec jekyll new --source ""c:/sourceDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Source_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Destination_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { Source = @"c:\sourceDir" },
-            };
+            Settings = { Destination = @"c:\destinationDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new --source ""c:/sourceDir""");
-        }
+        result.Args.Should().Be(@"exec jekyll new --destination ""c:/destinationDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Destination_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --safe")]
+    [Theory]
+    public void Should_Add_Safe_To_Arguments_If_Not_Null(bool? safeMode, string expected)
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { Destination = @"c:\destinationDir" },
-            };
+            Settings = { SafeMode = safeMode },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new --destination ""c:/destinationDir""");
-        }
+        result.Args.Should().Be($"exec jekyll new{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --safe")]
-        [Theory]
-        public void Should_Add_Safe_To_Arguments_If_Not_Null(bool? safeMode, string expected)
+    [Fact]
+    public void Should_Add_Single_Plugin_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { SafeMode = safeMode },
-            };
+            Settings = { Plugins = @"c:\pluginDir\" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll new{expected}");
-        }
+        result.Args.Should().Be(@"exec jekyll new --plugins ""c:/pluginDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Single_Plugin_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Multiple_Plugin_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { Plugins = @"c:\pluginDir\" },
-            };
+            Settings = { Plugins = new [] { @"c:\pluginDir1", @"c:\pluginDir2" } },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new --plugins ""c:/pluginDir""");
-        }
+        result.Args.Should().Be(@"exec jekyll new --plugins ""c:/pluginDir1"" ""c:/pluginDir2""");
+    }
 
-        [Fact]
-        public void Should_Add_Multiple_Plugin_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Layouts_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { Plugins = new [] { @"c:\pluginDir1", @"c:\pluginDir2" } },
-            };
+            Settings = { Layouts = @"c:\layoutsDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new --plugins ""c:/pluginDir1"" ""c:/pluginDir2""");
-        }
+        result.Args.Should().Be(@"exec jekyll new --layouts ""c:/layoutsDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Layouts_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --profile")]
+    [Theory]
+    public void Should_Add_LiquidProfile_To_Arguments_If_Not_Null(bool? liquidProfile, string expected)
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { Layouts = @"c:\layoutsDir" },
-            };
+            Settings = { LiquidProfile = liquidProfile },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll new --layouts ""c:/layoutsDir""");
-        }
+        result.Args.Should().Be($"exec jekyll new{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --profile")]
-        [Theory]
-        public void Should_Add_LiquidProfile_To_Arguments_If_Not_Null(bool? liquidProfile, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --trace")]
+    [Theory]
+    public void Should_Add_Trace_To_Arguments_If_Not_Null(bool? trace, string expected)
+    {
+        var fixture = new JekyllNewCommandFixture
         {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { LiquidProfile = liquidProfile },
-            };
+            Settings = { Trace = trace },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll new{expected}");
-        }
-
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --trace")]
-        [Theory]
-        public void Should_Add_Trace_To_Arguments_If_Not_Null(bool? trace, string expected)
-        {
-            var fixture = new JekyllNewCommandFixture
-            {
-                Settings = { Trace = trace },
-            };
-
-            var result = fixture.Run();
-
-            result.Args.Should().Be($"exec jekyll new{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll new{expected}");
     }
 }

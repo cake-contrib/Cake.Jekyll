@@ -17,14 +17,13 @@
 using Cake.Jekyll.Commands.New;
 using Cake.Jekyll.Tests.Support;
 
-namespace Cake.Jekyll.Tests.Commands.New
+namespace Cake.Jekyll.Tests.Commands.New;
+
+internal sealed class JekyllNewCommandFixture : JekyllFixture<JekyllNewSettings>
 {
-    internal sealed class JekyllNewCommandFixture : JekyllFixture<JekyllNewSettings>
+    protected override void RunTool()
     {
-        protected override void RunTool()
-        {
-            var tool = new JekyllNewCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
-            tool.New(Settings);
-        }
+        var tool = new JekyllNewCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
+        tool.New(Settings);
     }
 }

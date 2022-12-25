@@ -16,43 +16,42 @@
 
 using Cake.Core.Diagnostics;
 
-namespace Cake.Jekyll
+namespace Cake.Jekyll;
+
+/// <summary>
+/// Extensions to <see cref="LogLevel"/>
+/// </summary>
+public static class LogLevelExtensions
 {
     /// <summary>
-    /// Extensions to <see cref="LogLevel"/>
+    /// Convert a <see cref="LogLevel"/> to the best equivalent <see cref="JekyllLogLevel"/>.
     /// </summary>
-    public static class LogLevelExtensions
+    /// <param name="logLevel">The log level.</param>
+    /// <returns>The mapped <see cref="JekyllLogLevel"/></returns>
+    public static JekyllLogLevel ToJekyllLogLevel(this LogLevel logLevel)
     {
-        /// <summary>
-        /// Convert a <see cref="LogLevel"/> to the best equivalent <see cref="JekyllLogLevel"/>.
-        /// </summary>
-        /// <param name="logLevel">The log level.</param>
-        /// <returns>The mapped <see cref="JekyllLogLevel"/></returns>
-        public static JekyllLogLevel ToJekyllLogLevel(this LogLevel logLevel)
+        switch (logLevel)
         {
-            switch (logLevel)
-            {
-                case LogLevel.Fatal:
-                case LogLevel.Error:
-                    return JekyllLogLevel.Quiet;
+            case LogLevel.Fatal:
+            case LogLevel.Error:
+                return JekyllLogLevel.Quiet;
 
-                case LogLevel.Verbose:
-                case LogLevel.Debug:
-                    return JekyllLogLevel.Verbose;
+            case LogLevel.Verbose:
+            case LogLevel.Debug:
+                return JekyllLogLevel.Verbose;
 
-                default:
-                    return JekyllLogLevel.Default;
-            }
+            default:
+                return JekyllLogLevel.Default;
         }
+    }
 
-        /// <summary>
-        /// Convert a nullable <see cref="LogLevel"/> to the best equivalent <see cref="JekyllLogLevel"/>.
-        /// </summary>
-        /// <param name="logLevel">The log level.</param>
-        /// <returns>The mapped <see cref="JekyllLogLevel"/></returns>
-        public static JekyllLogLevel ToJekyllLogLevel(this LogLevel? logLevel)
-        {
-            return logLevel.HasValue ? ToJekyllLogLevel(logLevel.Value) : JekyllLogLevel.Default;
-        }
+    /// <summary>
+    /// Convert a nullable <see cref="LogLevel"/> to the best equivalent <see cref="JekyllLogLevel"/>.
+    /// </summary>
+    /// <param name="logLevel">The log level.</param>
+    /// <returns>The mapped <see cref="JekyllLogLevel"/></returns>
+    public static JekyllLogLevel ToJekyllLogLevel(this LogLevel? logLevel)
+    {
+        return logLevel.HasValue ? ToJekyllLogLevel(logLevel.Value) : JekyllLogLevel.Default;
     }
 }

@@ -20,29 +20,28 @@ using Cake.Core.Diagnostics;
 using Cake.Core.IO;
 using Cake.Core.Tooling;
 
-namespace Cake.Jekyll.Commands.Doctor
+namespace Cake.Jekyll.Commands.Doctor;
+
+/// <summary>
+/// Search your site site and print specific deprecation warnings.
+/// jekyll doctor
+/// </summary>
+/// <seealso cref="JekyllTool{JekyllDoctorSettings}" />
+internal class JekyllDoctorCommand : JekyllTool<JekyllDoctorSettings>
 {
-    /// <summary>
-    /// Search your site site and print specific deprecation warnings.
-    /// jekyll doctor
-    /// </summary>
-    /// <seealso cref="JekyllTool{JekyllDoctorSettings}" />
-    internal class JekyllDoctorCommand : JekyllTool<JekyllDoctorSettings>
+    public JekyllDoctorCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
+        IToolLocator tools, ICakeLog log)
+        : base(fileSystem, environment, processRunner, tools, log)
     {
-        public JekyllDoctorCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
-            IToolLocator tools, ICakeLog log)
-            : base(fileSystem, environment, processRunner, tools, log)
+    }
+
+    public void Doctor(JekyllDoctorSettings settings)
+    {
+        if (settings is null)
         {
+            throw new ArgumentNullException(nameof(settings));
         }
 
-        public void Doctor(JekyllDoctorSettings settings)
-        {
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            RunCore(settings);
-        }
+        RunCore(settings);
     }
 }

@@ -17,14 +17,13 @@
 using Cake.Jekyll.Commands.Clean;
 using Cake.Jekyll.Tests.Support;
 
-namespace Cake.Jekyll.Tests.Commands.Clean
+namespace Cake.Jekyll.Tests.Commands.Clean;
+
+internal sealed class JekyllCleanCommandFixture : JekyllFixture<JekyllCleanSettings>
 {
-    internal sealed class JekyllCleanCommandFixture : JekyllFixture<JekyllCleanSettings>
+    protected override void RunTool()
     {
-        protected override void RunTool()
-        {
-            var tool = new JekyllCleanCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
-            tool.Clean(Settings);
-        }
+        var tool = new JekyllCleanCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
+        tool.Clean(Settings);
     }
 }

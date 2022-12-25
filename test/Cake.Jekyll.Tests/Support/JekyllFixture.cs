@@ -20,38 +20,37 @@ using Cake.Core.Tooling;
 using Cake.Testing;
 using Cake.Testing.Fixtures;
 
-namespace Cake.Jekyll.Tests.Support
+namespace Cake.Jekyll.Tests.Support;
+
+internal abstract class JekyllFixture<TSettings> : JekyllFixture<TSettings, ToolFixtureResult>
+    where TSettings : ToolSettings, new()
 {
-    internal abstract class JekyllFixture<TSettings> : JekyllFixture<TSettings, ToolFixtureResult>
-        where TSettings : ToolSettings, new()
+    protected override ToolFixtureResult CreateResult(FilePath path, ProcessSettings process)
     {
-        protected override ToolFixtureResult CreateResult(FilePath path, ProcessSettings process)
-        {
-            return new ToolFixtureResult(path, process);
-        }
+        return new ToolFixtureResult(path, process);
+    }
+}
+
+internal abstract class JekyllFixture<TSettings, TFixtureResult> : ToolFixture<TSettings, TFixtureResult>
+    where TSettings : ToolSettings, new()
+    where TFixtureResult : ToolFixtureResult
+{
+    private readonly ICakeLog _log = new FakeLog();
+
+    /// <summary>
+    /// Ensures that the Jekyll tool exist under the tool settings tool path.
+    /// </summary>
+    public void GivenJekyllToolExist()
+    {
+        var jekyllToolPath = GetDefaultToolPath("jekyll");
+        FileSystem.CreateFile(jekyllToolPath);
     }
 
-    internal abstract class JekyllFixture<TSettings, TFixtureResult> : ToolFixture<TSettings, TFixtureResult>
-        where TSettings : ToolSettings, new()
-        where TFixtureResult : ToolFixtureResult
+    protected JekyllFixture()
+        : base("bundle")
     {
-        private readonly ICakeLog _log = new FakeLog();
-
-        /// <summary>
-        /// Ensures that the Jekyll tool exist under the tool settings tool path.
-        /// </summary>
-        public void GivenJekyllToolExist()
-        {
-            var jekyllToolPath = GetDefaultToolPath("jekyll");
-            FileSystem.CreateFile(jekyllToolPath);
-        }
-
-        protected JekyllFixture()
-            : base("bundle")
-        {
-            _log.Verbosity = Verbosity.Normal;
-        }
-
-        protected ICakeLog Log => _log;
+        _log.Verbosity = Verbosity.Normal;
     }
+
+    protected ICakeLog Log => _log;
 }

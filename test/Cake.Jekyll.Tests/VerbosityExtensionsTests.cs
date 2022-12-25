@@ -21,59 +21,58 @@ using Cake.Core.Diagnostics;
 using FluentAssertions;
 using Xunit;
 
-namespace Cake.Jekyll.Tests
+namespace Cake.Jekyll.Tests;
+
+public class VerbosityExtensionsTests
 {
-    public class VerbosityExtensionsTests
+    [MemberData(nameof(VerbosityValues))]
+    [Theory]
+    public void ToJekyllLogLevel_should_convert_to_Verbosity(Verbosity verbosity, JekyllLogLevel expected)
     {
-        [MemberData(nameof(VerbosityValues))]
-        [Theory]
-        public void ToJekyllLogLevel_should_convert_to_Verbosity(Verbosity verbosity, JekyllLogLevel expected)
+        var result = verbosity.ToJekyllLogLevel();
+        result.Should().Be(expected);
+    }
+
+    [MemberData(nameof(NullableVerbosityValues))]
+    [Theory]
+    public void ToJekyllLogLevel_should_convert_Nullable_Verbosity(Verbosity? verbosity, JekyllLogLevel expected)
+    {
+        var result = verbosity.ToJekyllLogLevel();
+        result.Should().Be(expected);
+    }
+
+    public static IEnumerable<object[]> VerbosityValues
+    {
+        get
         {
-            var result = verbosity.ToJekyllLogLevel();
-            result.Should().Be(expected);
+            var logLevelsMap = Enum.GetValues(typeof(Verbosity))
+                .Cast<Verbosity>()
+                .ToDictionary(v => v, _ => JekyllLogLevel.Default);
+
+            logLevelsMap[Verbosity.Quiet] = JekyllLogLevel.Quiet;
+            logLevelsMap[Verbosity.Verbose] = JekyllLogLevel.Verbose;
+            logLevelsMap[Verbosity.Diagnostic] = JekyllLogLevel.Verbose;
+
+            return logLevelsMap
+                .Select(kvp => new object[] { kvp.Key, kvp.Value });
         }
+    }
 
-        [MemberData(nameof(NullableVerbosityValues))]
-        [Theory]
-        public void ToJekyllLogLevel_should_convert_Nullable_Verbosity(Verbosity? verbosity, JekyllLogLevel expected)
+    public static IEnumerable<object[]> NullableVerbosityValues
+    {
+        get
         {
-            var result = verbosity.ToJekyllLogLevel();
-            result.Should().Be(expected);
-        }
+            var logLevelsMap = Enum.GetValues(typeof(Verbosity))
+                .Cast<Verbosity?>()
+                .ToDictionary(v => v, _ => JekyllLogLevel.Default);
 
-        public static IEnumerable<object[]> VerbosityValues
-        {
-            get
-            {
-                var logLevelsMap = Enum.GetValues(typeof(Verbosity))
-                    .Cast<Verbosity>()
-                    .ToDictionary(v => v, _ => JekyllLogLevel.Default);
+            logLevelsMap[Verbosity.Quiet] = JekyllLogLevel.Quiet;
+            logLevelsMap[Verbosity.Verbose] = JekyllLogLevel.Verbose;
+            logLevelsMap[Verbosity.Diagnostic] = JekyllLogLevel.Verbose;
 
-                logLevelsMap[Verbosity.Quiet] = JekyllLogLevel.Quiet;
-                logLevelsMap[Verbosity.Verbose] = JekyllLogLevel.Verbose;
-                logLevelsMap[Verbosity.Diagnostic] = JekyllLogLevel.Verbose;
-
-                return logLevelsMap
-                    .Select(kvp => new object[] { kvp.Key, kvp.Value });
-            }
-        }
-
-        public static IEnumerable<object[]> NullableVerbosityValues
-        {
-            get
-            {
-                var logLevelsMap = Enum.GetValues(typeof(Verbosity))
-                    .Cast<Verbosity?>()
-                    .ToDictionary(v => v, _ => JekyllLogLevel.Default);
-
-                logLevelsMap[Verbosity.Quiet] = JekyllLogLevel.Quiet;
-                logLevelsMap[Verbosity.Verbose] = JekyllLogLevel.Verbose;
-                logLevelsMap[Verbosity.Diagnostic] = JekyllLogLevel.Verbose;
-
-                return logLevelsMap
-                    .Select(kvp => new object[] { kvp.Key, kvp.Value })
-                    .Concat(new [] { new object[] { null, JekyllLogLevel.Default } });
-            }
+            return logLevelsMap
+                .Select(kvp => new object[] { kvp.Key, kvp.Value })
+                .Concat(new [] { new object[] { null, JekyllLogLevel.Default } });
         }
     }
 }

@@ -20,29 +20,28 @@ using Cake.Core.Diagnostics;
 using Cake.Core.IO;
 using Cake.Core.Tooling;
 
-namespace Cake.Jekyll.Commands.New
+namespace Cake.Jekyll.Commands.New;
+
+/// <summary>
+/// Create a new Jekyll site scaffold in <see cref="JekyllNewSettings.Path"/>.
+/// jekyll new
+/// </summary>
+/// <seealso cref="JekyllTool{JekyllNewSettings}" />
+internal class JekyllNewCommand : JekyllTool<JekyllNewSettings>
 {
-    /// <summary>
-    /// Create a new Jekyll site scaffold in <see cref="JekyllNewSettings.Path"/>.
-    /// jekyll new
-    /// </summary>
-    /// <seealso cref="JekyllTool{JekyllNewSettings}" />
-    internal class JekyllNewCommand : JekyllTool<JekyllNewSettings>
+    public JekyllNewCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
+        IToolLocator tools, ICakeLog log)
+        : base(fileSystem, environment, processRunner, tools, log)
     {
-        public JekyllNewCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
-            IToolLocator tools, ICakeLog log)
-            : base(fileSystem, environment, processRunner, tools, log)
+    }
+
+    public void New(JekyllNewSettings settings)
+    {
+        if (settings is null)
         {
+            throw new ArgumentNullException(nameof(settings));
         }
 
-        public void New(JekyllNewSettings settings)
-        {
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            RunCore(settings);
-        }
+        RunCore(settings);
     }
 }

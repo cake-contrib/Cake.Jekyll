@@ -20,29 +20,28 @@ using Cake.Core.Diagnostics;
 using Cake.Core.IO;
 using Cake.Core.Tooling;
 
-namespace Cake.Jekyll.Commands.Version
+namespace Cake.Jekyll.Commands.Version;
+
+/// <summary>
+/// Print the name and version.
+/// jekyll --version
+/// </summary>
+/// <seealso cref="JekyllTool{JekyllVersionSettings}" />
+internal class JekyllVersionCommand : JekyllTool<JekyllVersionSettings>
 {
-    /// <summary>
-    /// Print the name and version.
-    /// jekyll --version
-    /// </summary>
-    /// <seealso cref="JekyllTool{JekyllVersionSettings}" />
-    internal class JekyllVersionCommand : JekyllTool<JekyllVersionSettings>
+    public JekyllVersionCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
+        IToolLocator tools, ICakeLog log)
+        : base(fileSystem, environment, processRunner, tools, log)
     {
-        public JekyllVersionCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
-            IToolLocator tools, ICakeLog log)
-            : base(fileSystem, environment, processRunner, tools, log)
+    }
+
+    public void Version(JekyllVersionSettings settings)
+    {
+        if (settings is null)
         {
+            throw new ArgumentNullException(nameof(settings));
         }
 
-        public void Version(JekyllVersionSettings settings)
-        {
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            RunCore(settings);
-        }
+        RunCore(settings);
     }
 }

@@ -20,586 +20,585 @@ using System.Linq;
 using FluentAssertions;
 using Xunit;
 
-namespace Cake.Jekyll.Tests.Commands.Serve
+namespace Cake.Jekyll.Tests.Commands.Serve;
+
+public class JekyllServeCommandTests
 {
-    public class JekyllServeCommandTests
+    [Fact]
+    public void Should_Throw_If_Settings_Are_Null()
     {
-        [Fact]
-        public void Should_Throw_If_Settings_Are_Null()
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = null,
-            };
+            Settings = null,
+        };
 
-            Action action = () => fixture.Run();
+        Action action = () => fixture.Run();
 
-            action.Should().Throw<ArgumentNullException>()
-                .Which.ParamName.Should().Be("settings");
-        }
+        action.Should().Throw<ArgumentNullException>()
+            .Which.ParamName.Should().Be("settings");
+    }
 
-        [Fact]
-        public void Should_Add_Default_Arguments()
+    [Fact]
+    public void Should_Add_Default_Arguments()
+    {
+        var fixture = new JekyllServeCommandFixture();
+
+        var result = fixture.Run();
+
+        result.Args.Should().Be("exec jekyll serve");
+    }
+
+    [Fact]
+    public void Should_Add_Default_Arguments_When_Bundler_Is_Disabled()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture();
+            Settings = { DoNotUseBundler = true },
+        };
 
-            var result = fixture.Run();
+        fixture.GivenJekyllToolExist();
 
-            result.Args.Should().Be("exec jekyll serve");
-        }
+        var result = fixture.Run();
 
-        [Fact]
-        public void Should_Add_Default_Arguments_When_Bundler_Is_Disabled()
+        result.Args.Should().Be("serve");
+    }
+
+    [Fact]
+    public void Should_Add_Single_Configuration_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { DoNotUseBundler = true },
-            };
+            Settings = { Configuration = @"c:\_config.yml" },
+        };
 
-            fixture.GivenJekyllToolExist();
+        var result = fixture.Run();
 
-            var result = fixture.Run();
+        result.Args.Should().Be(@"exec jekyll serve --config ""c:/_config.yml""");
+    }
 
-            result.Args.Should().Be("serve");
-        }
-
-        [Fact]
-        public void Should_Add_Single_Configuration_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Multiple_Configuration_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Configuration = @"c:\_config.yml" },
-            };
+            Settings = { Configuration = new [] { @"c:\_config1.yml", @"c:\_config2.yml" } },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --config ""c:/_config.yml""");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --config ""c:/_config1.yml"" ""c:/_config2.yml""");
+    }
 
-        [Fact]
-        public void Should_Add_Multiple_Configuration_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Source_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Configuration = new [] { @"c:\_config1.yml", @"c:\_config2.yml" } },
-            };
+            Settings = { Source = @"c:\sourceDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --config ""c:/_config1.yml"" ""c:/_config2.yml""");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --source ""c:/sourceDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Source_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Destination_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Source = @"c:\sourceDir" },
-            };
+            Settings = { Destination = @"c:\destinationDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --source ""c:/sourceDir""");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --destination ""c:/destinationDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Destination_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --future")]
+    [Theory]
+    public void Should_Add_Future_To_Arguments_If_Not_Null(bool? future, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Destination = @"c:\destinationDir" },
-            };
+            Settings = { Future = future },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --destination ""c:/destinationDir""");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --future")]
-        [Theory]
-        public void Should_Add_Future_To_Arguments_If_Not_Null(bool? future, string expected)
+    [InlineData(null, null)]
+    [InlineData(5, " --limit_posts 5")]
+    [Theory]
+    public void Should_Add_LimitPosts_To_Arguments_If_Not_Null(int? limitPosts, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Future = future },
-            };
+            Settings = { LimitPosts = limitPosts },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(5, " --limit_posts 5")]
-        [Theory]
-        public void Should_Add_LimitPosts_To_Arguments_If_Not_Null(int? limitPosts, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, " --no-watch")]
+    [InlineData(true, " --watch")]
+    [Theory]
+    public void Should_Add_Watch_To_Arguments_If_Not_Null(bool? regeneration, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { LimitPosts = limitPosts },
-            };
+            Settings = { Watch = regeneration },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, " --no-watch")]
-        [InlineData(true, " --watch")]
-        [Theory]
-        public void Should_Add_Watch_To_Arguments_If_Not_Null(bool? regeneration, string expected)
+    [Fact]
+    public void Should_Add_BaseUrl_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Watch = regeneration },
-            };
+            Settings = { BaseUrl = @"http://localhost:8042" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --baseurl ""http://localhost:8042""");
+    }
 
-        [Fact]
-        public void Should_Add_BaseUrl_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --force_polling")]
+    [Theory]
+    public void Should_Add_ForcePolling_To_Arguments_If_Not_Null(bool? forcePolling, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { BaseUrl = @"http://localhost:8042" },
-            };
+            Settings = { ForcePolling = forcePolling },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --baseurl ""http://localhost:8042""");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --force_polling")]
-        [Theory]
-        public void Should_Add_ForcePolling_To_Arguments_If_Not_Null(bool? forcePolling, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --lsi")]
+    [Theory]
+    public void Should_Add_Lsi_To_Arguments_If_Not_Null(bool? lsi, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { ForcePolling = forcePolling },
-            };
+            Settings = { Lsi = lsi },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --lsi")]
-        [Theory]
-        public void Should_Add_Lsi_To_Arguments_If_Not_Null(bool? lsi, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --drafts")]
+    [Theory]
+    public void Should_Add_Drafts_To_Arguments_If_Not_Null(bool? drafts, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Lsi = lsi },
-            };
+            Settings = { Drafts = drafts },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --drafts")]
-        [Theory]
-        public void Should_Add_Drafts_To_Arguments_If_Not_Null(bool? drafts, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --unpublished")]
+    [Theory]
+    public void Should_Add_Unpublished_To_Arguments_If_Not_Null(bool? unpublished, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Drafts = drafts },
-            };
+            Settings = { Unpublished = unpublished },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --unpublished")]
-        [Theory]
-        public void Should_Add_Unpublished_To_Arguments_If_Not_Null(bool? unpublished, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --disable-disk-cache")]
+    [Theory]
+    public void Should_Add_DisableDiskCache_To_Arguments_If_Not_Null(bool? disableDiskCache, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Unpublished = unpublished },
-            };
+            Settings = { DisableDiskCache = disableDiskCache },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --disable-disk-cache")]
-        [Theory]
-        public void Should_Add_DisableDiskCache_To_Arguments_If_Not_Null(bool? disableDiskCache, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --incremental")]
+    [Theory]
+    public void Should_Add_IncrementalBuild_To_Arguments_If_Not_Null(bool? incrementalBuild, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { DisableDiskCache = disableDiskCache },
-            };
+            Settings = { IncrementalBuild = incrementalBuild },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --incremental")]
-        [Theory]
-        public void Should_Add_IncrementalBuild_To_Arguments_If_Not_Null(bool? incrementalBuild, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --strict_front_matter")]
+    [Theory]
+    public void Should_Add_StrictFrontMatter_To_Arguments_If_Not_Null(bool? strictFrontMatter, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { IncrementalBuild = incrementalBuild },
-            };
+            Settings = { StrictFrontMatter = strictFrontMatter },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --strict_front_matter")]
-        [Theory]
-        public void Should_Add_StrictFrontMatter_To_Arguments_If_Not_Null(bool? strictFrontMatter, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --safe")]
+    [Theory]
+    public void Should_Add_Safe_To_Arguments_If_Not_Null(bool? safeMode, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { StrictFrontMatter = strictFrontMatter },
-            };
+            Settings = { SafeMode = safeMode },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --safe")]
-        [Theory]
-        public void Should_Add_Safe_To_Arguments_If_Not_Null(bool? safeMode, string expected)
+    [Fact]
+    public void Should_Add_Single_Plugin_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { SafeMode = safeMode },
-            };
+            Settings = { Plugins = @"c:\pluginDir\" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --plugins ""c:/pluginDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Single_Plugin_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Multiple_Plugin_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Plugins = @"c:\pluginDir\" },
-            };
+            Settings = { Plugins = new [] { @"c:\pluginDir1", @"c:\pluginDir2" } },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --plugins ""c:/pluginDir""");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --plugins ""c:/pluginDir1"" ""c:/pluginDir2""");
+    }
 
-        [Fact]
-        public void Should_Add_Multiple_Plugin_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Layouts_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Plugins = new [] { @"c:\pluginDir1", @"c:\pluginDir2" } },
-            };
+            Settings = { Layouts = @"c:\layoutsDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --plugins ""c:/pluginDir1"" ""c:/pluginDir2""");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --layouts ""c:/layoutsDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Layouts_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --profile")]
+    [Theory]
+    public void Should_Add_LiquidProfile_To_Arguments_If_Not_Null(bool? liquidProfile, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Layouts = @"c:\layoutsDir" },
-            };
+            Settings = { LiquidProfile = liquidProfile },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --layouts ""c:/layoutsDir""");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --profile")]
-        [Theory]
-        public void Should_Add_LiquidProfile_To_Arguments_If_Not_Null(bool? liquidProfile, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --trace")]
+    [Theory]
+    public void Should_Add_Trace_To_Arguments_If_Not_Null(bool? trace, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { LiquidProfile = liquidProfile },
-            };
+            Settings = { Trace = trace },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --trace")]
-        [Theory]
-        public void Should_Add_Trace_To_Arguments_If_Not_Null(bool? trace, string expected)
+    [MemberData(nameof(JekyllLogLevels))]
+    [Theory]
+    public void Should_Add_LogLevel_To_Arguments_If_Not_Null(JekyllLogLevel? logLevel, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Trace = trace },
-            };
+            Settings = { LogLevel = logLevel },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [MemberData(nameof(JekyllLogLevels))]
-        [Theory]
-        public void Should_Add_LogLevel_To_Arguments_If_Not_Null(JekyllLogLevel? logLevel, string expected)
+    public static IEnumerable<object[]> JekyllLogLevels
+    {
+        get
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { LogLevel = logLevel },
-            };
+            var logLevelsMap = Enum.GetValues(typeof(JekyllLogLevel))
+                .Cast<JekyllLogLevel?>()
+                .ToDictionary(v => v, _ => string.Empty);
 
-            var result = fixture.Run();
+            logLevelsMap[JekyllLogLevel.Quiet] = " --quiet";
+            logLevelsMap[JekyllLogLevel.Verbose] = " --verbose";
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
+            return logLevelsMap
+                .Select(kvp => new object[] { kvp.Key, kvp.Value })
+                .Concat(new [] { new object[] { null, null } });
         }
+    }
 
-        public static IEnumerable<object[]> JekyllLogLevels
+    [Fact]
+    public void Should_Add_SslCertificate_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            get
-            {
-                var logLevelsMap = Enum.GetValues(typeof(JekyllLogLevel))
-                    .Cast<JekyllLogLevel?>()
-                    .ToDictionary(v => v, _ => string.Empty);
+            Settings = { SslCertificate = @"c:\localhost.crt" },
+        };
 
-                logLevelsMap[JekyllLogLevel.Quiet] = " --quiet";
-                logLevelsMap[JekyllLogLevel.Verbose] = " --verbose";
+        var result = fixture.Run();
 
-                return logLevelsMap
-                    .Select(kvp => new object[] { kvp.Key, kvp.Value })
-                    .Concat(new [] { new object[] { null, null } });
-            }
-        }
+        result.Args.Should().Be(@"exec jekyll serve --ssl-cert ""c:/localhost.crt""");
+    }
 
-        [Fact]
-        public void Should_Add_SslCertificate_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_SslKey_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { SslCertificate = @"c:\localhost.crt" },
-            };
+            Settings = { SslKey = @"c:\localhost.key" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --ssl-cert ""c:/localhost.crt""");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --ssl-key ""c:/localhost.key""");
+    }
 
-        [Fact]
-        public void Should_Add_SslKey_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Hostname_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { SslKey = @"c:\localhost.key" },
-            };
+            Settings = { Hostname = "MACHINENAME" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --ssl-key ""c:/localhost.key""");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --host ""MACHINENAME""");
+    }
 
-        [Fact]
-        public void Should_Add_Hostname_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Port_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Hostname = "MACHINENAME" },
-            };
+            Settings = { Port = 8042 },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --host ""MACHINENAME""");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --port 8042");
+    }
 
-        [Fact]
-        public void Should_Add_Port_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --open-url")]
+    [Theory]
+    public void Should_Add_OpenUrl_To_Arguments_If_Not_Null(bool? openUrl, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Port = 8042 },
-            };
+            Settings = { OpenUrl = openUrl },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --port 8042");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --open-url")]
-        [Theory]
-        public void Should_Add_OpenUrl_To_Arguments_If_Not_Null(bool? openUrl, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --detach")]
+    [Theory]
+    public void Should_Add_Detach_To_Arguments_If_Not_Null(bool? detach, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { OpenUrl = openUrl },
-            };
+            Settings = { Detach = detach },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --detach")]
-        [Theory]
-        public void Should_Add_Detach_To_Arguments_If_Not_Null(bool? detach, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --show-dir-listing")]
+    [Theory]
+    public void Should_Add_ShowDirListing_To_Arguments_If_Not_Null(bool? showDirListing, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { Detach = detach },
-            };
+            Settings = { ShowDirListing = showDirListing },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --show-dir-listing")]
-        [Theory]
-        public void Should_Add_ShowDirListing_To_Arguments_If_Not_Null(bool? showDirListing, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --skip-initial-build")]
+    [Theory]
+    public void Should_Add_SkipInitialBuild_To_Arguments_If_Not_Null(bool? skipInitialBuild, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { ShowDirListing = showDirListing },
-            };
+            Settings = { SkipInitialBuild = skipInitialBuild },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --skip-initial-build")]
-        [Theory]
-        public void Should_Add_SkipInitialBuild_To_Arguments_If_Not_Null(bool? skipInitialBuild, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --livereload")]
+    [Theory]
+    public void Should_Add_LiveReload_To_Arguments_If_Not_Null(bool? liveReload, string expected)
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { SkipInitialBuild = skipInitialBuild },
-            };
+            Settings = { LiveReload = liveReload },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll serve{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --livereload")]
-        [Theory]
-        public void Should_Add_LiveReload_To_Arguments_If_Not_Null(bool? liveReload, string expected)
+    [Fact]
+    public void Should_Add_Single_LiveReloadIgnore_Glob_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { LiveReload = liveReload },
-            };
+            Settings = { LiveReloadIgnore = "*.cake" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll serve{expected}");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --livereload-ignore ""*.cake""");
+    }
 
-        [Fact]
-        public void Should_Add_Single_LiveReloadIgnore_Glob_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Multiple_LiveReloadIgnore_Glob_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { LiveReloadIgnore = "*.cake" },
-            };
+            Settings = { LiveReloadIgnore = new [] { "*.cake", "*.cs" } },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --livereload-ignore ""*.cake""");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --livereload-ignore ""*.cake"" ""*.cs""");
+    }
 
-        [Fact]
-        public void Should_Add_Multiple_LiveReloadIgnore_Glob_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_LiveReloadMinDelay_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { LiveReloadIgnore = new [] { "*.cake", "*.cs" } },
-            };
+            Settings = { LiveReloadMinDelay = TimeSpan.FromSeconds(42) },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --livereload-ignore ""*.cake"" ""*.cs""");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --livereload-min-delay 42");
+    }
 
-        [Fact]
-        public void Should_Add_LiveReloadMinDelay_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_LiveReloadMaxDelay_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { LiveReloadMinDelay = TimeSpan.FromSeconds(42) },
-            };
+            Settings = { LiveReloadMaxDelay = TimeSpan.FromSeconds(42) },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --livereload-min-delay 42");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --livereload-max-delay 42");
+    }
 
-        [Fact]
-        public void Should_Add_LiveReloadMaxDelay_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_LiveReloadPort_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllServeCommandFixture
         {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { LiveReloadMaxDelay = TimeSpan.FromSeconds(42) },
-            };
+            Settings = { LiveReloadPort = 8043 },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll serve --livereload-max-delay 42");
-        }
-
-        [Fact]
-        public void Should_Add_LiveReloadPort_To_Arguments_If_Not_Null()
-        {
-            var fixture = new JekyllServeCommandFixture
-            {
-                Settings = { LiveReloadPort = 8043 },
-            };
-
-            var result = fixture.Run();
-
-            result.Args.Should().Be(@"exec jekyll serve --livereload-port 8043");
-        }
+        result.Args.Should().Be(@"exec jekyll serve --livereload-port 8043");
     }
 }

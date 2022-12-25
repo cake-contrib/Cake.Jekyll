@@ -23,223 +23,222 @@ using Cake.Core.Tooling;
 using Cake.Jekyll.Core;
 using Cake.Jekyll.Core.IO;
 
-namespace Cake.Jekyll
+namespace Cake.Jekyll;
+
+/// <summary>
+/// Jekyll tool settings.
+/// </summary>
+public abstract class JekyllSettings : ToolSettings
 {
     /// <summary>
-    /// Jekyll tool settings.
+    /// Initializes a new instance of the <see cref="JekyllSettings"/> class.
     /// </summary>
-    public abstract class JekyllSettings : ToolSettings
+    /// <param name="command">Command to run.</param>
+    protected JekyllSettings(string command)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JekyllSettings"/> class.
-        /// </summary>
-        /// <param name="command">Command to run.</param>
-        protected JekyllSettings(string command)
+        Command = command;
+    }
+
+    /// <summary>
+    /// Gets or sets if Bundler should *not* be used to execute Jekyll (defaults to <see langword="false"/>).
+    /// `jekyll` instead of `bundle exec`...
+    /// </summary>
+    public bool? DoNotUseBundler { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Log level set by Cake.
+    /// </summary>
+    internal Verbosity? CakeVerbosityLevel { get; set; }
+
+    /// <summary>
+    /// Gets the command which should be run.
+    /// </summary>
+    protected string Command { get; }
+
+    /// <summary>
+    /// Evaluates the settings and writes them to <paramref name="args"/>.
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    internal void Evaluate(ProcessArgumentBuilder args)
+    {
+        args.Append(Command);
+
+        EvaluateCore(args);
+    }
+
+    /// <summary>
+    /// Evaluates the settings and writes them to <paramref name="args"/>.
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    protected virtual void EvaluateCore(ProcessArgumentBuilder args)
+    {
+    }
+
+    /// <summary>
+    /// Apply option from a string value
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    /// <param name="value">The string value.</param>
+    protected void ApplyValue(ProcessArgumentBuilder args, string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
         {
-            Command = command;
+            return;
         }
 
-        /// <summary>
-        /// Gets or sets if Bundler should *not* be used to execute Jekyll (defaults to <see langword="false"/>).
-        /// `jekyll` instead of `bundle exec`...
-        /// </summary>
-        public bool? DoNotUseBundler { get; set; }
+        args.AppendQuoted(value);
+    }
 
-        /// <summary>
-        /// Gets or sets the Log level set by Cake.
-        /// </summary>
-        internal Verbosity? CakeVerbosityLevel { get; set; }
-
-        /// <summary>
-        /// Gets the command which should be run.
-        /// </summary>
-        protected string Command { get; }
-
-        /// <summary>
-        /// Evaluates the settings and writes them to <paramref name="args"/>.
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        internal void Evaluate(ProcessArgumentBuilder args)
+    /// <summary>
+    /// Apply option from a string value
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    /// <param name="optionName">The option name.</param>
+    /// <param name="value">The string value.</param>
+    protected void ApplyOption(ProcessArgumentBuilder args, string optionName, string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
         {
-            args.Append(Command);
-
-            EvaluateCore(args);
+            return;
         }
 
-        /// <summary>
-        /// Evaluates the settings and writes them to <paramref name="args"/>.
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        protected virtual void EvaluateCore(ProcessArgumentBuilder args)
+        args.Append(optionName);
+        args.AppendQuoted(value);
+    }
+
+    /// <summary>
+    /// Apply option from a nullable boolean value
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    /// <param name="optionName">The option name.</param>
+    /// <param name="optionValue">The nullable boolean value.</param>
+    protected void ApplyOption(ProcessArgumentBuilder args, string optionName, bool? optionValue)
+    {
+        if (!optionValue.GetValueOrDefault(false))
         {
+            return;
         }
 
-        /// <summary>
-        /// Apply option from a string value
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        /// <param name="value">The string value.</param>
-        protected void ApplyValue(ProcessArgumentBuilder args, string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return;
-            }
+        args.Append(optionName);
+    }
 
+    /// <summary>
+    /// Apply option from a nullable int value
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    /// <param name="optionName">The option name.</param>
+    /// <param name="optionValue">The nullable int value.</param>
+    protected void ApplyOption(ProcessArgumentBuilder args, string optionName, int? optionValue)
+    {
+        if (!optionValue.HasValue)
+        {
+            return;
+        }
+
+        args.Append(optionName);
+        args.Append(optionValue.Value.ToString(CultureInfo.InvariantCulture));
+    }
+
+    /// <summary>
+    /// Apply option from file path(s)
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    /// <param name="optionName">The option name.</param>
+    /// <param name="optionValue">The file path(s).</param>
+    protected void ApplyOption(ProcessArgumentBuilder args, string optionName, OneOrMoreFilePaths optionValue)
+    {
+        if (optionValue is null || optionValue.Count == 0)
+        {
+            return;
+        }
+
+        args.Append(optionName);
+
+        foreach (var filePath in optionValue)
+        {
+            args.AppendQuoted(filePath.FullPath);
+        }
+    }
+
+    /// <summary>
+    /// Apply option from directory path(s)
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    /// <param name="optionName">The option name.</param>
+    /// <param name="optionValue">The directory path(s).</param>
+    protected void ApplyOption(ProcessArgumentBuilder args, string optionName, OneOrMoreDirectoryPaths optionValue)
+    {
+        if (optionValue is null || optionValue.Count == 0)
+        {
+            return;
+        }
+
+        args.Append(optionName);
+
+        foreach (var filePath in optionValue)
+        {
+            args.AppendQuoted(filePath.FullPath);
+        }
+    }
+
+    /// <summary>
+    /// Apply option for the Jekyll Log Level
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    /// <param name="logLevel">The Jekyll log level.</param>
+    protected void ApplyOption(ProcessArgumentBuilder args, JekyllLogLevel? logLevel)
+    {
+        if (logLevel is null && CakeVerbosityLevel.HasValue)
+        {
+            logLevel = CakeVerbosityLevel.ToJekyllLogLevel();
+        }
+
+        switch (logLevel)
+        {
+            case JekyllLogLevel.Quiet:
+                args.Append("--quiet");
+                break;
+            case JekyllLogLevel.Verbose:
+                args.Append("--verbose");
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Apply option from one or more string values
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    /// <param name="optionName">The option name.</param>
+    /// <param name="optionValue">The string value(s).</param>
+    protected void ApplyOption(ProcessArgumentBuilder args, string optionName, OneOrMoreStrings optionValue)
+    {
+        if (optionValue is null || optionValue.Count == 0)
+        {
+            return;
+        }
+
+        args.Append(optionName);
+
+        foreach (var value in optionValue)
+        {
             args.AppendQuoted(value);
         }
+    }
 
-        /// <summary>
-        /// Apply option from a string value
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        /// <param name="optionName">The option name.</param>
-        /// <param name="value">The string value.</param>
-        protected void ApplyOption(ProcessArgumentBuilder args, string optionName, string value)
+    /// <summary>
+    /// Apply option from one or more string values
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    /// <param name="optionName">The option name.</param>
+    /// <param name="optionValue">The string value(s).</param>
+    protected void ApplyOption(ProcessArgumentBuilder args, string optionName, TimeSpan? optionValue)
+    {
+        if (optionValue is null)
         {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return;
-            }
-
-            args.Append(optionName);
-            args.AppendQuoted(value);
+            return;
         }
 
-        /// <summary>
-        /// Apply option from a nullable boolean value
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        /// <param name="optionName">The option name.</param>
-        /// <param name="optionValue">The nullable boolean value.</param>
-        protected void ApplyOption(ProcessArgumentBuilder args, string optionName, bool? optionValue)
-        {
-            if (!optionValue.GetValueOrDefault(false))
-            {
-                return;
-            }
-
-            args.Append(optionName);
-        }
-
-        /// <summary>
-        /// Apply option from a nullable int value
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        /// <param name="optionName">The option name.</param>
-        /// <param name="optionValue">The nullable int value.</param>
-        protected void ApplyOption(ProcessArgumentBuilder args, string optionName, int? optionValue)
-        {
-            if (!optionValue.HasValue)
-            {
-                return;
-            }
-
-            args.Append(optionName);
-            args.Append(optionValue.Value.ToString(CultureInfo.InvariantCulture));
-        }
-
-        /// <summary>
-        /// Apply option from file path(s)
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        /// <param name="optionName">The option name.</param>
-        /// <param name="optionValue">The file path(s).</param>
-        protected void ApplyOption(ProcessArgumentBuilder args, string optionName, OneOrMoreFilePaths optionValue)
-        {
-            if (optionValue is null || optionValue.Count == 0)
-            {
-                return;
-            }
-
-            args.Append(optionName);
-
-            foreach (var filePath in optionValue)
-            {
-                args.AppendQuoted(filePath.FullPath);
-            }
-        }
-
-        /// <summary>
-        /// Apply option from directory path(s)
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        /// <param name="optionName">The option name.</param>
-        /// <param name="optionValue">The directory path(s).</param>
-        protected void ApplyOption(ProcessArgumentBuilder args, string optionName, OneOrMoreDirectoryPaths optionValue)
-        {
-            if (optionValue is null || optionValue.Count == 0)
-            {
-                return;
-            }
-
-            args.Append(optionName);
-
-            foreach (var filePath in optionValue)
-            {
-                args.AppendQuoted(filePath.FullPath);
-            }
-        }
-
-        /// <summary>
-        /// Apply option for the Jekyll Log Level
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        /// <param name="logLevel">The Jekyll log level.</param>
-        protected void ApplyOption(ProcessArgumentBuilder args, JekyllLogLevel? logLevel)
-        {
-            if (logLevel is null && CakeVerbosityLevel.HasValue)
-            {
-                logLevel = CakeVerbosityLevel.ToJekyllLogLevel();
-            }
-
-            switch (logLevel)
-            {
-                case JekyllLogLevel.Quiet:
-                    args.Append("--quiet");
-                    break;
-                case JekyllLogLevel.Verbose:
-                    args.Append("--verbose");
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Apply option from one or more string values
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        /// <param name="optionName">The option name.</param>
-        /// <param name="optionValue">The string value(s).</param>
-        protected void ApplyOption(ProcessArgumentBuilder args, string optionName, OneOrMoreStrings optionValue)
-        {
-            if (optionValue is null || optionValue.Count == 0)
-            {
-                return;
-            }
-
-            args.Append(optionName);
-
-            foreach (var value in optionValue)
-            {
-                args.AppendQuoted(value);
-            }
-        }
-
-        /// <summary>
-        /// Apply option from one or more string values
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        /// <param name="optionName">The option name.</param>
-        /// <param name="optionValue">The string value(s).</param>
-        protected void ApplyOption(ProcessArgumentBuilder args, string optionName, TimeSpan? optionValue)
-        {
-            if (optionValue is null)
-            {
-                return;
-            }
-
-            args.Append(optionName);
-            args.Append(((int)optionValue.Value.TotalSeconds).ToString(CultureInfo.InvariantCulture));
-        }
+        args.Append(optionName);
+        args.Append(((int)optionValue.Value.TotalSeconds).ToString(CultureInfo.InvariantCulture));
     }
 }

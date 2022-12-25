@@ -19,120 +19,119 @@ using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Jekyll.Commands.Clean;
 
-namespace Cake.Jekyll
+namespace Cake.Jekyll;
+
+/// <summary>
+/// <para>Functions to execute the <see href="https://jekyllrb.com">Jekyll</see> commands in Cake builds.</para>
+/// <para>
+/// In order to use this Cake addin, Bundle and/or Jekyll must be installed.
+/// </para>
+/// <para>
+/// In order to use it, add the following to your Cake build script:
+/// <code>
+/// <![CDATA[
+/// #addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+/// ]]>
+/// </code>
+///
+/// Where `x.y.z` is the version of the Cake.Jekyll package to use (latest version is recommended).
+/// </para>
+/// </summary>
+[CakeAliasCategory("Jekyll")]
+[CakeNamespaceImport("Cake.Jekyll.Commands.Clean")]
+public static class JekyllCleanAliases
 {
     /// <summary>
-    /// <para>Functions to execute the <see href="https://jekyllrb.com">Jekyll</see> commands in Cake builds.</para>
-    /// <para>
-    /// In order to use this Cake addin, Bundle and/or Jekyll must be installed.
-    /// </para>
-    /// <para>
-    /// In order to use it, add the following to your Cake build script:
+    /// Clean your site using the default settings.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <example>
     /// <code>
     /// <![CDATA[
-    /// #addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+    /// JekyllClean();
     /// ]]>
     /// </code>
-    ///
-    /// Where `x.y.z` is the version of the Cake.Jekyll package to use (latest version is recommended).
-    /// </para>
-    /// </summary>
-    [CakeAliasCategory("Jekyll")]
-    [CakeNamespaceImport("Cake.Jekyll.Commands.Clean")]
-    public static class JekyllCleanAliases
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Clean")]
+    public static void JekyllClean(this ICakeContext context)
     {
-        /// <summary>
-        /// Clean your site using the default settings.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// JekyllClean();
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("Clean")]
-        public static void JekyllClean(this ICakeContext context)
+        if (context is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            context.JekyllClean(new JekyllCleanSettings());
+            throw new ArgumentNullException(nameof(context));
         }
 
-        /// <summary>
-        /// Clean your site using the settings returned by a configurator.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="configurator">The settings configurator.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// JekyllClean(settings => settings.SetLogLevel(JekyllLogLevel.Verbose));
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("Clean")]
-        public static void JekyllClean(this ICakeContext context, Action<JekyllCleanSettings> configurator)
+        context.JekyllClean(new JekyllCleanSettings());
+    }
+
+    /// <summary>
+    /// Clean your site using the settings returned by a configurator.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="configurator">The settings configurator.</param>
+    /// <example>
+    /// <code>
+    /// <![CDATA[
+    /// JekyllClean(settings => settings.SetLogLevel(JekyllLogLevel.Verbose));
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Clean")]
+    public static void JekyllClean(this ICakeContext context, Action<JekyllCleanSettings> configurator)
+    {
+        if (context is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (configurator is null)
-            {
-                throw new ArgumentNullException(nameof(configurator));
-            }
-
-            var settings = new JekyllCleanSettings();
-            configurator(settings);
-
-            context.JekyllClean(settings);
+            throw new ArgumentNullException(nameof(context));
         }
 
-        /// <summary>
-        /// Clean your site using the specified settings.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="settings">The settings.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// var settings = new JekyllCleanSettings 
-        /// {
-        ///     LogLevel = JekyllLogLevel.Verbose,
-        /// };
-        /// 
-        /// JekyllClean(settings);
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("Clean")]
-        public static void JekyllClean(this ICakeContext context, JekyllCleanSettings settings)
+        if (configurator is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            AddinInformation.LogVersionInformation(context.Log);
-
-            var command = new JekyllCleanCommand(context.FileSystem, context.Environment, context.ProcessRunner,
-                context.Tools, context.Log);
-
-            command.Clean(settings);
+            throw new ArgumentNullException(nameof(configurator));
         }
+
+        var settings = new JekyllCleanSettings();
+        configurator(settings);
+
+        context.JekyllClean(settings);
+    }
+
+    /// <summary>
+    /// Clean your site using the specified settings.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="settings">The settings.</param>
+    /// <example>
+    /// <code>
+    /// <![CDATA[
+    /// var settings = new JekyllCleanSettings 
+    /// {
+    ///     LogLevel = JekyllLogLevel.Verbose,
+    /// };
+    /// 
+    /// JekyllClean(settings);
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Clean")]
+    public static void JekyllClean(this ICakeContext context, JekyllCleanSettings settings)
+    {
+        if (context is null)
+        {
+            throw new ArgumentNullException(nameof(context));
+        }
+
+        if (settings is null)
+        {
+            throw new ArgumentNullException(nameof(settings));
+        }
+
+        AddinInformation.LogVersionInformation(context.Log);
+
+        var command = new JekyllCleanCommand(context.FileSystem, context.Environment, context.ProcessRunner,
+            context.Tools, context.Log);
+
+        command.Clean(settings);
     }
 }

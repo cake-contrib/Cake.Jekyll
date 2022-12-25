@@ -20,29 +20,28 @@ using Cake.Core.Diagnostics;
 using Cake.Core.IO;
 using Cake.Core.Tooling;
 
-namespace Cake.Jekyll.Commands.Serve
+namespace Cake.Jekyll.Commands.Serve;
+
+/// <summary>
+/// Serve your Jekyll site locally.
+/// jekyll serve
+/// </summary>
+/// <seealso cref="JekyllTool{JekyllServeSettings}" />
+internal class JekyllServeCommand : JekyllTool<JekyllServeSettings>
 {
-    /// <summary>
-    /// Serve your Jekyll site locally.
-    /// jekyll serve
-    /// </summary>
-    /// <seealso cref="JekyllTool{JekyllServeSettings}" />
-    internal class JekyllServeCommand : JekyllTool<JekyllServeSettings>
+    public JekyllServeCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
+        IToolLocator tools, ICakeLog log)
+        : base(fileSystem, environment, processRunner, tools, log)
     {
-        public JekyllServeCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
-            IToolLocator tools, ICakeLog log)
-            : base(fileSystem, environment, processRunner, tools, log)
+    }
+
+    public void Serve(JekyllServeSettings settings)
+    {
+        if (settings is null)
         {
+            throw new ArgumentNullException(nameof(settings));
         }
 
-        public void Serve(JekyllServeSettings settings)
-        {
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            RunCore(settings);
-        }
+        RunCore(settings);
     }
 }

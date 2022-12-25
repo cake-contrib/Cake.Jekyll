@@ -17,14 +17,13 @@
 using Cake.Jekyll.Commands.Build;
 using Cake.Jekyll.Tests.Support;
 
-namespace Cake.Jekyll.Tests.Commands.Build
+namespace Cake.Jekyll.Tests.Commands.Build;
+
+internal sealed class JekyllBuildCommandFixture : JekyllFixture<JekyllBuildSettings>
 {
-    internal sealed class JekyllBuildCommandFixture : JekyllFixture<JekyllBuildSettings>
+    protected override void RunTool()
     {
-        protected override void RunTool()
-        {
-            var tool = new JekyllBuildCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
-            tool.Build(Settings);
-        }
+        var tool = new JekyllBuildCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
+        tool.Build(Settings);
     }
 }

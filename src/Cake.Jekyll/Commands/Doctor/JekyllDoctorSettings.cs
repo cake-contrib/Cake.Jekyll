@@ -17,92 +17,91 @@
 using Cake.Core.IO;
 using Cake.Jekyll.Core.IO;
 
-namespace Cake.Jekyll.Commands.Doctor
+namespace Cake.Jekyll.Commands.Doctor;
+
+/// <summary>
+/// Contains settings used by <see cref="JekyllDoctorCommand"/>.
+/// </summary>
+public class JekyllDoctorSettings : JekyllSettings
 {
     /// <summary>
-    /// Contains settings used by <see cref="JekyllDoctorCommand"/>.
+    /// Initializes a new instance of the <see cref="JekyllDoctorSettings"/> class.
     /// </summary>
-    public class JekyllDoctorSettings : JekyllSettings
+    public JekyllDoctorSettings()
+        : base("doctor")
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JekyllDoctorSettings"/> class.
-        /// </summary>
-        public JekyllDoctorSettings()
-            : base("doctor")
-        {
-        }
+    }
 
-        /// <summary>
-        /// Specifies one or more configuration file(s) instead of using `_config.yml` automatically.
-        /// Settings in later files override settings in earlier files.
-        /// </summary>
-        public OneOrMoreFilePaths Configuration { get; set; }
+    /// <summary>
+    /// Specifies one or more configuration file(s) instead of using `_config.yml` automatically.
+    /// Settings in later files override settings in earlier files.
+    /// </summary>
+    public OneOrMoreFilePaths Configuration { get; set; }
 
-        /// <summary>
-        /// Site Source directory, the directory where Jekyll will read files (defaults to `./`).
-        /// -s, --source DIR
-        /// </summary>
-        public DirectoryPath Source { get; set; }
+    /// <summary>
+    /// Site Source directory, the directory where Jekyll will read files (defaults to `./`).
+    /// -s, --source DIR
+    /// </summary>
+    public DirectoryPath Source { get; set; }
 
-        /// <summary>
-        /// Site Destination directory, the directory where Jekyll will write files (defaults to `./_site`).
-        /// -d, --destination DIR
-        /// 
-        /// Important: The contents of <see cref="Destination"/> are automatically cleaned, by default, when the site is built.
-        /// Files or folders that are not created by your site will be removed.
-        /// Some files could be retained by specifying them within the `keep_files` configuration directive.
-        /// Do not use an important location for <see cref="Destination"/>; instead, use it as a staging area and copy files from there to your web server.
-        /// </summary>
-        public DirectoryPath Destination { get; set; }
+    /// <summary>
+    /// Site Destination directory, the directory where Jekyll will write files (defaults to `./_site`).
+    /// -d, --destination DIR
+    /// 
+    /// Important: The contents of <see cref="Destination"/> are automatically cleaned, by default, when the site is built.
+    /// Files or folders that are not created by your site will be removed.
+    /// Some files could be retained by specifying them within the `keep_files` configuration directive.
+    /// Do not use an important location for <see cref="Destination"/>; instead, use it as a staging area and copy files from there to your web server.
+    /// </summary>
+    public DirectoryPath Destination { get; set; }
 
-        /// <summary>
-        /// Safe mode (defaults to <see langword="false"/>).
-        /// --safe
-        /// 
-        /// Disable non-whitelisted plugins, caching to disk, and ignore symbolic links.
-        /// </summary>
-        public bool? SafeMode { get; set; }
+    /// <summary>
+    /// Safe mode (defaults to <see langword="false"/>).
+    /// --safe
+    /// 
+    /// Disable non-whitelisted plugins, caching to disk, and ignore symbolic links.
+    /// </summary>
+    public bool? SafeMode { get; set; }
 
-        /// <summary>
-        /// Specifies plugin directories instead of using `_plugins/` automatically.
-        /// -p, --plugins DIR1[,DIR2,...]
-        /// </summary>
-        public OneOrMoreDirectoryPaths Plugins { get; set; }
+    /// <summary>
+    /// Specifies plugin directories instead of using `_plugins/` automatically.
+    /// -p, --plugins DIR1[,DIR2,...]
+    /// </summary>
+    public OneOrMoreDirectoryPaths Plugins { get; set; }
 
-        /// <summary>
-        /// Specifies layout directory instead of using `_layouts/` automatically.
-        /// --layouts DIR
-        /// </summary>
-        public DirectoryPath Layouts { get; set; }
+    /// <summary>
+    /// Specifies layout directory instead of using `_layouts/` automatically.
+    /// --layouts DIR
+    /// </summary>
+    public DirectoryPath Layouts { get; set; }
 
-        /// <summary>
-        /// Generate a Liquid rendering profile to help you identify performance bottlenecks (defaults to <see langword="false"/>).
-        /// --profile
-        /// </summary>
-        public bool? LiquidProfile { get; set; }
+    /// <summary>
+    /// Generate a Liquid rendering profile to help you identify performance bottlenecks (defaults to <see langword="false"/>).
+    /// --profile
+    /// </summary>
+    public bool? LiquidProfile { get; set; }
 
-        /// <summary>
-        /// Show the full backtrace when an error occurs (defaults to <see langword="false"/>).
-        /// -t, --trace
-        /// </summary>
-        public bool? Trace { get; set; }
+    /// <summary>
+    /// Show the full backtrace when an error occurs (defaults to <see langword="false"/>).
+    /// -t, --trace
+    /// </summary>
+    public bool? Trace { get; set; }
 
-        /// <summary>
-        /// Evaluates the settings and writes them to <paramref name="args"/>.
-        /// </summary>
-        /// <param name="args">The argument builder into which the settings should be written.</param>
-        protected override void EvaluateCore(ProcessArgumentBuilder args)
-        {
-            base.EvaluateCore(args);
+    /// <summary>
+    /// Evaluates the settings and writes them to <paramref name="args"/>.
+    /// </summary>
+    /// <param name="args">The argument builder into which the settings should be written.</param>
+    protected override void EvaluateCore(ProcessArgumentBuilder args)
+    {
+        base.EvaluateCore(args);
 
-            ApplyOption(args, "--config", Configuration);
-            ApplyOption(args, "--source", Source?.FullPath);
-            ApplyOption(args, "--destination", Destination?.FullPath);
-            ApplyOption(args, "--safe", SafeMode);
-            ApplyOption(args, "--plugins", Plugins);
-            ApplyOption(args, "--layouts", Layouts?.FullPath);
-            ApplyOption(args, "--profile", LiquidProfile);
-            ApplyOption(args, "--trace", Trace);
-        }
+        ApplyOption(args, "--config", Configuration);
+        ApplyOption(args, "--source", Source?.FullPath);
+        ApplyOption(args, "--destination", Destination?.FullPath);
+        ApplyOption(args, "--safe", SafeMode);
+        ApplyOption(args, "--plugins", Plugins);
+        ApplyOption(args, "--layouts", Layouts?.FullPath);
+        ApplyOption(args, "--profile", LiquidProfile);
+        ApplyOption(args, "--trace", Trace);
     }
 }

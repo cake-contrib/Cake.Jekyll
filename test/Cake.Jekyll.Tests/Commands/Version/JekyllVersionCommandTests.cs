@@ -18,47 +18,46 @@ using System;
 using FluentAssertions;
 using Xunit;
 
-namespace Cake.Jekyll.Tests.Commands.Version
+namespace Cake.Jekyll.Tests.Commands.Version;
+
+public class JekyllVersionCommandTests
 {
-    public class JekyllVersionCommandTests
+    [Fact]
+    public void Should_Throw_If_Settings_Are_Null()
     {
-        [Fact]
-        public void Should_Throw_If_Settings_Are_Null()
+        var fixture = new JekyllVersionCommandFixture
         {
-            var fixture = new JekyllVersionCommandFixture
-            {
-                Settings = null,
-            };
+            Settings = null,
+        };
 
-            Action action = () => fixture.Run();
+        Action action = () => fixture.Run();
 
-            action.Should().Throw<ArgumentNullException>()
-                .Which.ParamName.Should().Be("settings");
-        }
+        action.Should().Throw<ArgumentNullException>()
+            .Which.ParamName.Should().Be("settings");
+    }
 
-        [Fact]
-        public void Should_Add_Default_Arguments()
+    [Fact]
+    public void Should_Add_Default_Arguments()
+    {
+        var fixture = new JekyllVersionCommandFixture();
+
+        var result = fixture.Run();
+
+        result.Args.Should().Be("exec jekyll --version");
+    }
+
+    [Fact]
+    public void Should_Add_Default_Arguments_When_Bundler_Is_Disabled()
+    {
+        var fixture = new JekyllVersionCommandFixture
         {
-            var fixture = new JekyllVersionCommandFixture();
+            Settings = { DoNotUseBundler = true },
+        };
 
-            var result = fixture.Run();
+        fixture.GivenJekyllToolExist();
 
-            result.Args.Should().Be("exec jekyll --version");
-        }
+        var result = fixture.Run();
 
-        [Fact]
-        public void Should_Add_Default_Arguments_When_Bundler_Is_Disabled()
-        {
-            var fixture = new JekyllVersionCommandFixture
-            {
-                Settings = { DoNotUseBundler = true },
-            };
-
-            fixture.GivenJekyllToolExist();
-
-            var result = fixture.Run();
-
-            result.Args.Should().Be("--version");
-        }
+        result.Args.Should().Be("--version");
     }
 }

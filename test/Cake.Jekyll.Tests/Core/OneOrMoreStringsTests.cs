@@ -19,40 +19,39 @@ using Cake.Jekyll.Core;
 using FluentAssertions;
 using Xunit;
 
-namespace Cake.Jekyll.Tests.Core
+namespace Cake.Jekyll.Tests.Core;
+
+public class OneOrMoreStringsTests
 {
-    public class OneOrMoreStringsTests
+    [Fact]
+    public void OneOrMoreFilePath_has_implicit_conversion_from_string()
     {
-        [Fact]
-        public void OneOrMoreFilePath_has_implicit_conversion_from_string()
-        {
-            OneOrMoreStrings target = "Hello";
+        OneOrMoreStrings target = "Hello";
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(1);
-            target[0].Should().Be("Hello");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(1);
+        target[0].Should().Be("Hello");
+    }
 
-        [Fact]
-        public void OneOrMoreFilePath_has_implicit_conversion_from_string_array()
-        {
-            OneOrMoreStrings target = new [] { "Hello1", "Hello2" };
+    [Fact]
+    public void OneOrMoreFilePath_has_implicit_conversion_from_string_array()
+    {
+        OneOrMoreStrings target = new [] { "Hello1", "Hello2" };
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(2);
-            target[0].Should().Be("Hello1");
-            target[1].Should().Be("Hello2");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(2);
+        target[0].Should().Be("Hello1");
+        target[1].Should().Be("Hello2");
+    }
 
-        [Fact]
-        public void OneOrMoreFilePath_has_implicit_conversion_from_List_of_String()
-        {
-            OneOrMoreStrings target = new List<string> { "Hello1", "Hello2" };
+    [Fact]
+    public void OneOrMoreFilePath_has_implicit_conversion_from_List_of_String()
+    {
+        OneOrMoreStrings target = new List<string> { "Hello1", "Hello2" };
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(2);
-            target[0].Should().Be("Hello1");
-            target[1].Should().Be("Hello2");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(2);
+        target[0].Should().Be("Hello1");
+        target[1].Should().Be("Hello2");
     }
 }

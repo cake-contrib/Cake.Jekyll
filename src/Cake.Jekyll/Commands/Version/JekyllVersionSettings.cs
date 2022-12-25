@@ -15,19 +15,18 @@
 #endregion
 
 
-namespace Cake.Jekyll.Commands.Version
+namespace Cake.Jekyll.Commands.Version;
+
+/// <summary>
+/// Contains settings used by <see cref="JekyllVersionCommand"/>.
+/// </summary>
+public class JekyllVersionSettings : JekyllSettings
 {
     /// <summary>
-    /// Contains settings used by <see cref="JekyllVersionCommand"/>.
+    /// Initializes a new instance of the <see cref="JekyllVersionCommand"/> class.
     /// </summary>
-    public class JekyllVersionSettings : JekyllSettings
+    public JekyllVersionSettings()
+        : base("--version")
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JekyllVersionCommand"/> class.
-        /// </summary>
-        public JekyllVersionSettings()
-            : base("--version")
-        {
-        }
     }
 }

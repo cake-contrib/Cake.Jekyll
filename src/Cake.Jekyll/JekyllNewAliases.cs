@@ -20,148 +20,147 @@ using Cake.Core.Annotations;
 using Cake.Core.IO;
 using Cake.Jekyll.Commands.New;
 
-namespace Cake.Jekyll
+namespace Cake.Jekyll;
+
+/// <summary>
+/// <para>Functions to execute the <see href="https://jekyllrb.com">Jekyll</see> commands in Cake builds.</para>
+/// <para>
+/// In order to use this Cake addin, Bundle and/or Jekyll must be installed.
+/// </para>
+/// <para>
+/// In order to use it, add the following to your Cake build script:
+/// <code>
+/// <![CDATA[
+/// #addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+/// ]]>
+/// </code>
+///
+/// Where `x.y.z` is the version of the Cake.Jekyll package to use (latest version is recommended).
+/// </para>
+/// </summary>
+[CakeAliasCategory("Jekyll")]
+[CakeNamespaceImport("Cake.Jekyll.Commands.New")]
+public static class JekyllNewAliases
 {
     /// <summary>
-    /// <para>Functions to execute the <see href="https://jekyllrb.com">Jekyll</see> commands in Cake builds.</para>
-    /// <para>
-    /// In order to use this Cake addin, Bundle and/or Jekyll must be installed.
-    /// </para>
-    /// <para>
-    /// In order to use it, add the following to your Cake build script:
+    /// Create a new Jekyll site scaffold using the default settings.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="path">The path to scaffold the site.</param>
+    /// <example>
     /// <code>
     /// <![CDATA[
-    /// #addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+    /// JekyllNew("myblog");
     /// ]]>
     /// </code>
-    ///
-    /// Where `x.y.z` is the version of the Cake.Jekyll package to use (latest version is recommended).
-    /// </para>
-    /// </summary>
-    [CakeAliasCategory("Jekyll")]
-    [CakeNamespaceImport("Cake.Jekyll.Commands.New")]
-    public static class JekyllNewAliases
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("New")]
+    public static void JekyllNew(this ICakeContext context, DirectoryPath path)
     {
-        /// <summary>
-        /// Create a new Jekyll site scaffold using the default settings.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="path">The path to scaffold the site.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// JekyllNew("myblog");
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("New")]
-        public static void JekyllNew(this ICakeContext context, DirectoryPath path)
+        if (context is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (path is null)
-            {
-                throw new ArgumentNullException(nameof(path));
-            }
-
-            context.JekyllNew(path, new JekyllNewSettings());
+            throw new ArgumentNullException(nameof(context));
         }
 
-        /// <summary>
-        /// Create a new Jekyll site scaffold using the settings returned by a configurator.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="path">The path to scaffold the site.</param>
-        /// <param name="configurator">The settings configurator.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// JekyllNew("myblog", settings => settings
-        ///     .EnableForce()
-        ///     .SkipBundle()
-        /// );
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("New")]
-        public static void JekyllNew(this ICakeContext context, DirectoryPath path, Action<JekyllNewSettings> configurator)
+        if (path is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (path is null)
-            {
-                throw new ArgumentNullException(nameof(path));
-            }
-
-            if (configurator is null)
-            {
-                throw new ArgumentNullException(nameof(configurator));
-            }
-
-            var settings = new JekyllNewSettings
-            {
-                Path = path,
-            };
-
-            configurator(settings);
-
-            context.JekyllNew(path, settings);
+            throw new ArgumentNullException(nameof(path));
         }
 
-        /// <summary>
-        /// Create a new Jekyll site scaffold using the specified settings.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="path">The path to scaffold the site.</param>
-        /// <param name="settings">The settings.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// var settings = new JekyllNewSettings 
-        /// {
-        ///     Force = true,
-        ///     SkipBundle = true,
-        /// };
-        /// 
-        /// JekyllNew("myblog", settings);
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("New")]
-        public static void JekyllNew(this ICakeContext context, DirectoryPath path, JekyllNewSettings settings)
+        context.JekyllNew(path, new JekyllNewSettings());
+    }
+
+    /// <summary>
+    /// Create a new Jekyll site scaffold using the settings returned by a configurator.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="path">The path to scaffold the site.</param>
+    /// <param name="configurator">The settings configurator.</param>
+    /// <example>
+    /// <code>
+    /// <![CDATA[
+    /// JekyllNew("myblog", settings => settings
+    ///     .EnableForce()
+    ///     .SkipBundle()
+    /// );
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("New")]
+    public static void JekyllNew(this ICakeContext context, DirectoryPath path, Action<JekyllNewSettings> configurator)
+    {
+        if (context is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (path is null)
-            {
-                throw new ArgumentNullException(nameof(path));
-            }
-
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            AddinInformation.LogVersionInformation(context.Log);
-
-            settings.Path = path;
-
-            var command = new JekyllNewCommand(context.FileSystem, context.Environment, context.ProcessRunner,
-                context.Tools, context.Log);
-
-            command.New(settings);
+            throw new ArgumentNullException(nameof(context));
         }
+
+        if (path is null)
+        {
+            throw new ArgumentNullException(nameof(path));
+        }
+
+        if (configurator is null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        var settings = new JekyllNewSettings
+        {
+            Path = path,
+        };
+
+        configurator(settings);
+
+        context.JekyllNew(path, settings);
+    }
+
+    /// <summary>
+    /// Create a new Jekyll site scaffold using the specified settings.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="path">The path to scaffold the site.</param>
+    /// <param name="settings">The settings.</param>
+    /// <example>
+    /// <code>
+    /// <![CDATA[
+    /// var settings = new JekyllNewSettings 
+    /// {
+    ///     Force = true,
+    ///     SkipBundle = true,
+    /// };
+    /// 
+    /// JekyllNew("myblog", settings);
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("New")]
+    public static void JekyllNew(this ICakeContext context, DirectoryPath path, JekyllNewSettings settings)
+    {
+        if (context is null)
+        {
+            throw new ArgumentNullException(nameof(context));
+        }
+
+        if (path is null)
+        {
+            throw new ArgumentNullException(nameof(path));
+        }
+
+        if (settings is null)
+        {
+            throw new ArgumentNullException(nameof(settings));
+        }
+
+        AddinInformation.LogVersionInformation(context.Log);
+
+        settings.Path = path;
+
+        var command = new JekyllNewCommand(context.FileSystem, context.Environment, context.ProcessRunner,
+            context.Tools, context.Log);
+
+        command.New(settings);
     }
 }

@@ -20,72 +20,71 @@ using Cake.Jekyll.Core.IO;
 using FluentAssertions;
 using Xunit;
 
-namespace Cake.Jekyll.Tests.Core.IO
+namespace Cake.Jekyll.Tests.Core.IO;
+
+public class OneOrMoreFilePathsTests
 {
-    public class OneOrMoreFilePathsTests
+    [Fact]
+    public void OneOrMoreFilePath_has_implicit_conversion_from_string()
     {
-        [Fact]
-        public void OneOrMoreFilePath_has_implicit_conversion_from_string()
-        {
-            OneOrMoreFilePaths target = "_config.yml";
+        OneOrMoreFilePaths target = "_config.yml";
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(1);
-            target[0].FullPath.Should().Be("_config.yml");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(1);
+        target[0].FullPath.Should().Be("_config.yml");
+    }
 
-        [Fact]
-        public void OneOrMoreFilePath_has_implicit_conversion_from_string_array()
-        {
-            OneOrMoreFilePaths target = new [] { "_config1.yml", "_config2.yml" };
+    [Fact]
+    public void OneOrMoreFilePath_has_implicit_conversion_from_string_array()
+    {
+        OneOrMoreFilePaths target = new [] { "_config1.yml", "_config2.yml" };
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(2);
-            target[0].FullPath.Should().Be("_config1.yml");
-            target[1].FullPath.Should().Be("_config2.yml");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(2);
+        target[0].FullPath.Should().Be("_config1.yml");
+        target[1].FullPath.Should().Be("_config2.yml");
+    }
 
-        [Fact]
-        public void OneOrMoreFilePath_has_implicit_conversion_from_List_of_String()
-        {
-            OneOrMoreFilePaths target = new List<string> { "_config1.yml", "_config2.yml" };
+    [Fact]
+    public void OneOrMoreFilePath_has_implicit_conversion_from_List_of_String()
+    {
+        OneOrMoreFilePaths target = new List<string> { "_config1.yml", "_config2.yml" };
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(2);
-            target[0].FullPath.Should().Be("_config1.yml");
-            target[1].FullPath.Should().Be("_config2.yml");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(2);
+        target[0].FullPath.Should().Be("_config1.yml");
+        target[1].FullPath.Should().Be("_config2.yml");
+    }
 
-        [Fact]
-        public void OneOrMoreFilePath_has_implicit_conversion_from_FilePath()
-        {
-            OneOrMoreFilePaths target = FilePath.FromString("_config.yml");
+    [Fact]
+    public void OneOrMoreFilePath_has_implicit_conversion_from_FilePath()
+    {
+        OneOrMoreFilePaths target = FilePath.FromString("_config.yml");
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(1);
-            target[0].FullPath.Should().Be("_config.yml");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(1);
+        target[0].FullPath.Should().Be("_config.yml");
+    }
 
-        [Fact]
-        public void OneOrMoreFilePath_has_implicit_conversion_from_FilePath_array()
-        {
-            OneOrMoreFilePaths target = new [] { FilePath.FromString("_config1.yml"), FilePath.FromString("_config2.yml") };
+    [Fact]
+    public void OneOrMoreFilePath_has_implicit_conversion_from_FilePath_array()
+    {
+        OneOrMoreFilePaths target = new [] { FilePath.FromString("_config1.yml"), FilePath.FromString("_config2.yml") };
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(2);
-            target[0].FullPath.Should().Be("_config1.yml");
-            target[1].FullPath.Should().Be("_config2.yml");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(2);
+        target[0].FullPath.Should().Be("_config1.yml");
+        target[1].FullPath.Should().Be("_config2.yml");
+    }
 
-        [Fact]
-        public void OneOrMoreFilePath_has_implicit_conversion_from_List_of_FilePath()
-        {
-            OneOrMoreFilePaths target = new List<FilePath> { FilePath.FromString("_config1.yml"), FilePath.FromString("_config2.yml") };
+    [Fact]
+    public void OneOrMoreFilePath_has_implicit_conversion_from_List_of_FilePath()
+    {
+        OneOrMoreFilePaths target = new List<FilePath> { FilePath.FromString("_config1.yml"), FilePath.FromString("_config2.yml") };
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(2);
-            target[0].FullPath.Should().Be("_config1.yml");
-            target[1].FullPath.Should().Be("_config2.yml");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(2);
+        target[0].FullPath.Should().Be("_config1.yml");
+        target[1].FullPath.Should().Be("_config2.yml");
     }
 }

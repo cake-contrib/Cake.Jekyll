@@ -20,29 +20,28 @@ using Cake.Core.Diagnostics;
 using Cake.Core.IO;
 using Cake.Core.Tooling;
 
-namespace Cake.Jekyll.Commands.NewTheme
+namespace Cake.Jekyll.Commands.NewTheme;
+
+/// <summary>
+/// Create a new Jekyll theme scaffold.
+/// jekyll new-theme
+/// </summary>
+/// <seealso cref="JekyllTool{JekyllNewThemeSettings}" />
+internal class JekyllNewThemeCommand : JekyllTool<JekyllNewThemeSettings>
 {
-    /// <summary>
-    /// Create a new Jekyll theme scaffold.
-    /// jekyll new-theme
-    /// </summary>
-    /// <seealso cref="JekyllTool{JekyllNewThemeSettings}" />
-    internal class JekyllNewThemeCommand : JekyllTool<JekyllNewThemeSettings>
+    public JekyllNewThemeCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
+        IToolLocator tools, ICakeLog log)
+        : base(fileSystem, environment, processRunner, tools, log)
     {
-        public JekyllNewThemeCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
-            IToolLocator tools, ICakeLog log)
-            : base(fileSystem, environment, processRunner, tools, log)
+    }
+
+    public void NewTheme(JekyllNewThemeSettings settings)
+    {
+        if (settings is null)
         {
+            throw new ArgumentNullException(nameof(settings));
         }
 
-        public void NewTheme(JekyllNewThemeSettings settings)
-        {
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            RunCore(settings);
-        }
+        RunCore(settings);
     }
 }

@@ -16,42 +16,41 @@
 
 using Cake.Core.Diagnostics;
 
-namespace Cake.Jekyll
+namespace Cake.Jekyll;
+
+/// <summary>
+/// Extensions to <see cref="Verbosity"/>
+/// </summary>
+public static class VerbosityExtensions
 {
     /// <summary>
-    /// Extensions to <see cref="Verbosity"/>
+    /// Convert a <see cref="Verbosity"/> to the best equivalent <see cref="JekyllLogLevel"/>.
     /// </summary>
-    public static class VerbosityExtensions
+    /// <param name="verbosity">The log level.</param>
+    /// <returns>The mapped <see cref="JekyllLogLevel"/></returns>
+    public static JekyllLogLevel ToJekyllLogLevel(this Verbosity verbosity)
     {
-        /// <summary>
-        /// Convert a <see cref="Verbosity"/> to the best equivalent <see cref="JekyllLogLevel"/>.
-        /// </summary>
-        /// <param name="verbosity">The log level.</param>
-        /// <returns>The mapped <see cref="JekyllLogLevel"/></returns>
-        public static JekyllLogLevel ToJekyllLogLevel(this Verbosity verbosity)
+        switch (verbosity)
         {
-            switch (verbosity)
-            {
-                case Verbosity.Quiet:
-                    return JekyllLogLevel.Quiet;
+            case Verbosity.Quiet:
+                return JekyllLogLevel.Quiet;
 
-                case Verbosity.Verbose:
-                case Verbosity.Diagnostic:
-                    return JekyllLogLevel.Verbose;
+            case Verbosity.Verbose:
+            case Verbosity.Diagnostic:
+                return JekyllLogLevel.Verbose;
 
-                default:
-                    return JekyllLogLevel.Default;
-            }
+            default:
+                return JekyllLogLevel.Default;
         }
+    }
 
-        /// <summary>
-        /// Convert a <see cref="Verbosity"/> to the best equivalent <see cref="JekyllLogLevel"/>.
-        /// </summary>
-        /// <param name="verbosity">The log level.</param>
-        /// <returns>The mapped <see cref="JekyllLogLevel"/></returns>
-        public static JekyllLogLevel ToJekyllLogLevel(this Verbosity? verbosity)
-        {
-            return verbosity.HasValue ? ToJekyllLogLevel(verbosity.Value) : JekyllLogLevel.Default;
-        }
+    /// <summary>
+    /// Convert a <see cref="Verbosity"/> to the best equivalent <see cref="JekyllLogLevel"/>.
+    /// </summary>
+    /// <param name="verbosity">The log level.</param>
+    /// <returns>The mapped <see cref="JekyllLogLevel"/></returns>
+    public static JekyllLogLevel ToJekyllLogLevel(this Verbosity? verbosity)
+    {
+        return verbosity.HasValue ? ToJekyllLogLevel(verbosity.Value) : JekyllLogLevel.Default;
     }
 }

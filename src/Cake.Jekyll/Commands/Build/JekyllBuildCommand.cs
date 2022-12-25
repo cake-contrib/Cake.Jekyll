@@ -20,29 +20,28 @@ using Cake.Core.Diagnostics;
 using Cake.Core.IO;
 using Cake.Core.Tooling;
 
-namespace Cake.Jekyll.Commands.Build
+namespace Cake.Jekyll.Commands.Build;
+
+/// <summary>
+/// Build your Jekyll site.
+/// jekyll build
+/// </summary>
+/// <seealso cref="JekyllTool{JekyllBuildSettings}" />
+internal class JekyllBuildCommand : JekyllTool<JekyllBuildSettings>
 {
-    /// <summary>
-    /// Build your Jekyll site.
-    /// jekyll build
-    /// </summary>
-    /// <seealso cref="JekyllTool{JekyllBuildSettings}" />
-    internal class JekyllBuildCommand : JekyllTool<JekyllBuildSettings>
+    public JekyllBuildCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
+        IToolLocator tools, ICakeLog log)
+        : base(fileSystem, environment, processRunner, tools, log)
     {
-        public JekyllBuildCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
-            IToolLocator tools, ICakeLog log)
-            : base(fileSystem, environment, processRunner, tools, log)
+    }
+
+    public void Build(JekyllBuildSettings settings)
+    {
+        if (settings is null)
         {
+            throw new ArgumentNullException(nameof(settings));
         }
 
-        public void Build(JekyllBuildSettings settings)
-        {
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            RunCore(settings);
-        }
+        RunCore(settings);
     }
 }

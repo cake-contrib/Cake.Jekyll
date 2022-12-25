@@ -14,28 +14,27 @@
 //
 #endregion
 
-namespace Cake.Jekyll
+namespace Cake.Jekyll;
+
+/// <summary>
+/// Define the Jekyll log levels
+/// </summary>
+public enum JekyllLogLevel
 {
     /// <summary>
-    /// Define the Jekyll log levels
+    /// Use the equivalent log level by the running Cake build.
     /// </summary>
-    public enum JekyllLogLevel
-    {
-        /// <summary>
-        /// Use the equivalent log level by the running Cake build.
-        /// </summary>
-        Default,
+    Default,
 
-        /// <summary>
-        /// Silence the normal output from Jekyll during a build.
-        /// -q, --quiet
-        /// </summary>
-        Quiet,
+    /// <summary>
+    /// Silence the normal output from Jekyll during a build.
+    /// -q, --quiet
+    /// </summary>
+    Quiet,
 
-        /// <summary>
-        /// Print verbose output.
-        /// -V, --verbose
-        /// </summary>
-        Verbose,
-    }
+    /// <summary>
+    /// Print verbose output.
+    /// -V, --verbose
+    /// </summary>
+    Verbose,
 }

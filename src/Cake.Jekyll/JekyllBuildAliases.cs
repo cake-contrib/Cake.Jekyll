@@ -19,120 +19,119 @@ using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Jekyll.Commands.Build;
 
-namespace Cake.Jekyll
+namespace Cake.Jekyll;
+
+/// <summary>
+/// <para>Functions to execute the <see href="https://jekyllrb.com">Jekyll</see> commands in Cake builds.</para>
+/// <para>
+/// In order to use this Cake addin, Bundle and/or Jekyll must be installed.
+/// </para>
+/// <para>
+/// In order to use it, add the following to your Cake build script:
+/// <code>
+/// <![CDATA[
+/// #addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+/// ]]>
+/// </code>
+///
+/// Where `x.y.z` is the version of the Cake.Jekyll package to use (latest version is recommended).
+/// </para>
+/// </summary>
+[CakeAliasCategory("Jekyll")]
+[CakeNamespaceImport("Cake.Jekyll.Commands.Build")]
+public static class JekyllBuildAliases
 {
     /// <summary>
-    /// <para>Functions to execute the <see href="https://jekyllrb.com">Jekyll</see> commands in Cake builds.</para>
-    /// <para>
-    /// In order to use this Cake addin, Bundle and/or Jekyll must be installed.
-    /// </para>
-    /// <para>
-    /// In order to use it, add the following to your Cake build script:
+    /// Build your site using the default settings.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <example>
     /// <code>
     /// <![CDATA[
-    /// #addin "nuget:?package=Cake.Jekyll&version=x.y.z"
+    /// JekyllBuild();
     /// ]]>
     /// </code>
-    ///
-    /// Where `x.y.z` is the version of the Cake.Jekyll package to use (latest version is recommended).
-    /// </para>
-    /// </summary>
-    [CakeAliasCategory("Jekyll")]
-    [CakeNamespaceImport("Cake.Jekyll.Commands.Build")]
-    public static class JekyllBuildAliases
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Build")]
+    public static void JekyllBuild(this ICakeContext context)
     {
-        /// <summary>
-        /// Build your site using the default settings.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// JekyllBuild();
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("Build")]
-        public static void JekyllBuild(this ICakeContext context)
+        if (context is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            context.JekyllBuild(new JekyllBuildSettings());
+            throw new ArgumentNullException(nameof(context));
         }
 
-        /// <summary>
-        /// Build your site using the settings returned by a configurator.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="configurator">The settings configurator.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// JekyllBuild(settings => settings.SetLogLevel(JekyllLogLevel.Verbose));
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("Build")]
-        public static void JekyllBuild(this ICakeContext context, Action<JekyllBuildSettings> configurator)
+        context.JekyllBuild(new JekyllBuildSettings());
+    }
+
+    /// <summary>
+    /// Build your site using the settings returned by a configurator.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="configurator">The settings configurator.</param>
+    /// <example>
+    /// <code>
+    /// <![CDATA[
+    /// JekyllBuild(settings => settings.SetLogLevel(JekyllLogLevel.Verbose));
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Build")]
+    public static void JekyllBuild(this ICakeContext context, Action<JekyllBuildSettings> configurator)
+    {
+        if (context is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (configurator is null)
-            {
-                throw new ArgumentNullException(nameof(configurator));
-            }
-
-            var settings = new JekyllBuildSettings();
-            configurator(settings);
-
-            context.JekyllBuild(settings);
+            throw new ArgumentNullException(nameof(context));
         }
 
-        /// <summary>
-        /// Build your site using the specified settings.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="settings">The settings.</param>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// var settings = new JekyllBuildSettings 
-        /// {
-        ///     LogLevel = JekyllLogLevel.Verbose,
-        /// };
-        /// 
-        /// JekyllBuild(settings);
-        /// ]]>
-        /// </code>
-        /// </example>
-        [CakeMethodAlias]
-        [CakeAliasCategory("Build")]
-        public static void JekyllBuild(this ICakeContext context, JekyllBuildSettings settings)
+        if (configurator is null)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            AddinInformation.LogVersionInformation(context.Log);
-
-            var command = new JekyllBuildCommand(context.FileSystem, context.Environment, context.ProcessRunner,
-                context.Tools, context.Log);
-
-            command.Build(settings);
+            throw new ArgumentNullException(nameof(configurator));
         }
+
+        var settings = new JekyllBuildSettings();
+        configurator(settings);
+
+        context.JekyllBuild(settings);
+    }
+
+    /// <summary>
+    /// Build your site using the specified settings.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="settings">The settings.</param>
+    /// <example>
+    /// <code>
+    /// <![CDATA[
+    /// var settings = new JekyllBuildSettings 
+    /// {
+    ///     LogLevel = JekyllLogLevel.Verbose,
+    /// };
+    /// 
+    /// JekyllBuild(settings);
+    /// ]]>
+    /// </code>
+    /// </example>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Build")]
+    public static void JekyllBuild(this ICakeContext context, JekyllBuildSettings settings)
+    {
+        if (context is null)
+        {
+            throw new ArgumentNullException(nameof(context));
+        }
+
+        if (settings is null)
+        {
+            throw new ArgumentNullException(nameof(settings));
+        }
+
+        AddinInformation.LogVersionInformation(context.Log);
+
+        var command = new JekyllBuildCommand(context.FileSystem, context.Environment, context.ProcessRunner,
+            context.Tools, context.Log);
+
+        command.Build(settings);
     }
 }

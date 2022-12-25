@@ -20,29 +20,28 @@ using Cake.Core.Diagnostics;
 using Cake.Core.IO;
 using Cake.Core.Tooling;
 
-namespace Cake.Jekyll.Commands.Clean
+namespace Cake.Jekyll.Commands.Clean;
+
+/// <summary>
+/// Clean your site (removes site output and metadata file) without building.
+/// jekyll clean
+/// </summary>
+/// <seealso cref="JekyllTool{JekyllCleanSettings}" />
+internal class JekyllCleanCommand : JekyllTool<JekyllCleanSettings>
 {
-    /// <summary>
-    /// Clean your site (removes site output and metadata file) without building.
-    /// jekyll clean
-    /// </summary>
-    /// <seealso cref="JekyllTool{JekyllCleanSettings}" />
-    internal class JekyllCleanCommand : JekyllTool<JekyllCleanSettings>
+    public JekyllCleanCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
+        IToolLocator tools, ICakeLog log)
+        : base(fileSystem, environment, processRunner, tools, log)
     {
-        public JekyllCleanCommand(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner,
-            IToolLocator tools, ICakeLog log)
-            : base(fileSystem, environment, processRunner, tools, log)
+    }
+
+    public void Clean(JekyllCleanSettings settings)
+    {
+        if (settings is null)
         {
+            throw new ArgumentNullException(nameof(settings));
         }
 
-        public void Clean(JekyllCleanSettings settings)
-        {
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            RunCore(settings);
-        }
+        RunCore(settings);
     }
 }

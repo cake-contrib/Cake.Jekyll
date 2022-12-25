@@ -18,29 +18,28 @@ using Cake.Jekyll.Commands.Version;
 using FluentAssertions;
 using Xunit;
 
-namespace Cake.Jekyll.Tests.Commands.Version
+namespace Cake.Jekyll.Tests.Commands.Version;
+
+public class JekyllVersionSettingsExtensionsTests
 {
-    public class JekyllVersionSettingsExtensionsTests
+    [Fact]
+    public void SetWorkingDirectory_Should_Set_WorkingDirectory()
     {
-        [Fact]
-        public void SetWorkingDirectory_Should_Set_WorkingDirectory()
-        {
-            var settings = new JekyllVersionSettings();
+        var settings = new JekyllVersionSettings();
 
-            settings.SetWorkingDirectory(@"c:\workingDir");
+        settings.SetWorkingDirectory(@"c:\workingDir");
 
-            settings.WorkingDirectory.Should().NotBeNull();
-            settings.WorkingDirectory.FullPath.Should().Be("c:/workingDir");
-        }
+        settings.WorkingDirectory.Should().NotBeNull();
+        settings.WorkingDirectory.FullPath.Should().Be("c:/workingDir");
+    }
 
-        [Fact]
-        public void DoNotUseBundler_Should_Set_DoNotUseBundler()
-        {
-            var settings = new JekyllVersionSettings();
+    [Fact]
+    public void DoNotUseBundler_Should_Set_DoNotUseBundler()
+    {
+        var settings = new JekyllVersionSettings();
 
-            settings.DoNotUseBundler();
+        settings.DoNotUseBundler();
 
-            settings.DoNotUseBundler.Should().BeTrue();
-        }
+        settings.DoNotUseBundler.Should().BeTrue();
     }
 }

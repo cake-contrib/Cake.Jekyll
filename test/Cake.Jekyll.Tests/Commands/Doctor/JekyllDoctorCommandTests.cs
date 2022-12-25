@@ -18,186 +18,185 @@ using System;
 using FluentAssertions;
 using Xunit;
 
-namespace Cake.Jekyll.Tests.Commands.Doctor
+namespace Cake.Jekyll.Tests.Commands.Doctor;
+
+public class JekyllDoctorCommandTests
 {
-    public class JekyllDoctorCommandTests
+    [Fact]
+    public void Should_Throw_If_Settings_Are_Null()
     {
-        [Fact]
-        public void Should_Throw_If_Settings_Are_Null()
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = null,
-            };
+            Settings = null,
+        };
 
-            Action action = () => fixture.Run();
+        Action action = () => fixture.Run();
 
-            action.Should().Throw<ArgumentNullException>()
-                .Which.ParamName.Should().Be("settings");
-        }
+        action.Should().Throw<ArgumentNullException>()
+            .Which.ParamName.Should().Be("settings");
+    }
 
-        [Fact]
-        public void Should_Add_Default_Arguments()
+    [Fact]
+    public void Should_Add_Default_Arguments()
+    {
+        var fixture = new JekyllDoctorCommandFixture();
+
+        var result = fixture.Run();
+
+        result.Args.Should().Be("exec jekyll doctor");
+    }
+
+    [Fact]
+    public void Should_Add_Default_Arguments_When_Bundler_Is_Disabled()
+    {
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture();
+            Settings = { DoNotUseBundler = true },
+        };
 
-            var result = fixture.Run();
+        fixture.GivenJekyllToolExist();
 
-            result.Args.Should().Be("exec jekyll doctor");
-        }
+        var result = fixture.Run();
 
-        [Fact]
-        public void Should_Add_Default_Arguments_When_Bundler_Is_Disabled()
+        result.Args.Should().Be("doctor");
+    }
+
+    [Fact]
+    public void Should_Add_Single_Configuration_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = { DoNotUseBundler = true },
-            };
+            Settings = { Configuration = @"c:\_config.yml" },
+        };
 
-            fixture.GivenJekyllToolExist();
+        var result = fixture.Run();
 
-            var result = fixture.Run();
+        result.Args.Should().Be(@"exec jekyll doctor --config ""c:/_config.yml""");
+    }
 
-            result.Args.Should().Be("doctor");
-        }
-
-        [Fact]
-        public void Should_Add_Single_Configuration_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Multiple_Configuration_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = { Configuration = @"c:\_config.yml" },
-            };
+            Settings = { Configuration = new [] { @"c:\_config1.yml", @"c:\_config2.yml" } },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll doctor --config ""c:/_config.yml""");
-        }
+        result.Args.Should().Be(@"exec jekyll doctor --config ""c:/_config1.yml"" ""c:/_config2.yml""");
+    }
 
-        [Fact]
-        public void Should_Add_Multiple_Configuration_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Source_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = { Configuration = new [] { @"c:\_config1.yml", @"c:\_config2.yml" } },
-            };
+            Settings = { Source = @"c:\sourceDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll doctor --config ""c:/_config1.yml"" ""c:/_config2.yml""");
-        }
+        result.Args.Should().Be(@"exec jekyll doctor --source ""c:/sourceDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Source_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Destination_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = { Source = @"c:\sourceDir" },
-            };
+            Settings = { Destination = @"c:\destinationDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll doctor --source ""c:/sourceDir""");
-        }
+        result.Args.Should().Be(@"exec jekyll doctor --destination ""c:/destinationDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Destination_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --safe")]
+    [Theory]
+    public void Should_Add_Safe_To_Arguments_If_Not_Null(bool? safeMode, string expected)
+    {
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = { Destination = @"c:\destinationDir" },
-            };
+            Settings = { SafeMode = safeMode },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll doctor --destination ""c:/destinationDir""");
-        }
+        result.Args.Should().Be($"exec jekyll doctor{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --safe")]
-        [Theory]
-        public void Should_Add_Safe_To_Arguments_If_Not_Null(bool? safeMode, string expected)
+    [Fact]
+    public void Should_Add_Single_Plugin_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = { SafeMode = safeMode },
-            };
+            Settings = { Plugins = @"c:\pluginDir\" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll doctor{expected}");
-        }
+        result.Args.Should().Be(@"exec jekyll doctor --plugins ""c:/pluginDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Single_Plugin_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Multiple_Plugin_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = { Plugins = @"c:\pluginDir\" },
-            };
+            Settings = { Plugins = new [] { @"c:\pluginDir1", @"c:\pluginDir2" } },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll doctor --plugins ""c:/pluginDir""");
-        }
+        result.Args.Should().Be(@"exec jekyll doctor --plugins ""c:/pluginDir1"" ""c:/pluginDir2""");
+    }
 
-        [Fact]
-        public void Should_Add_Multiple_Plugin_To_Arguments_If_Not_Null()
+    [Fact]
+    public void Should_Add_Layouts_To_Arguments_If_Not_Null()
+    {
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = { Plugins = new [] { @"c:\pluginDir1", @"c:\pluginDir2" } },
-            };
+            Settings = { Layouts = @"c:\layoutsDir" },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll doctor --plugins ""c:/pluginDir1"" ""c:/pluginDir2""");
-        }
+        result.Args.Should().Be(@"exec jekyll doctor --layouts ""c:/layoutsDir""");
+    }
 
-        [Fact]
-        public void Should_Add_Layouts_To_Arguments_If_Not_Null()
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --profile")]
+    [Theory]
+    public void Should_Add_LiquidProfile_To_Arguments_If_Not_Null(bool? liquidProfile, string expected)
+    {
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = { Layouts = @"c:\layoutsDir" },
-            };
+            Settings = { LiquidProfile = liquidProfile },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be(@"exec jekyll doctor --layouts ""c:/layoutsDir""");
-        }
+        result.Args.Should().Be($"exec jekyll doctor{expected}");
+    }
 
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --profile")]
-        [Theory]
-        public void Should_Add_LiquidProfile_To_Arguments_If_Not_Null(bool? liquidProfile, string expected)
+    [InlineData(null, null)]
+    [InlineData(false, null)]
+    [InlineData(true, " --trace")]
+    [Theory]
+    public void Should_Add_Trace_To_Arguments_If_Not_Null(bool? trace, string expected)
+    {
+        var fixture = new JekyllDoctorCommandFixture
         {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = { LiquidProfile = liquidProfile },
-            };
+            Settings = { Trace = trace },
+        };
 
-            var result = fixture.Run();
+        var result = fixture.Run();
 
-            result.Args.Should().Be($"exec jekyll doctor{expected}");
-        }
-
-        [InlineData(null, null)]
-        [InlineData(false, null)]
-        [InlineData(true, " --trace")]
-        [Theory]
-        public void Should_Add_Trace_To_Arguments_If_Not_Null(bool? trace, string expected)
-        {
-            var fixture = new JekyllDoctorCommandFixture
-            {
-                Settings = { Trace = trace },
-            };
-
-            var result = fixture.Run();
-
-            result.Args.Should().Be($"exec jekyll doctor{expected}");
-        }
+        result.Args.Should().Be($"exec jekyll doctor{expected}");
     }
 }

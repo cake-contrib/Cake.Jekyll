@@ -17,14 +17,13 @@
 using Cake.Jekyll.Commands.Doctor;
 using Cake.Jekyll.Tests.Support;
 
-namespace Cake.Jekyll.Tests.Commands.Doctor
+namespace Cake.Jekyll.Tests.Commands.Doctor;
+
+internal sealed class JekyllDoctorCommandFixture : JekyllFixture<JekyllDoctorSettings>
 {
-    internal sealed class JekyllDoctorCommandFixture : JekyllFixture<JekyllDoctorSettings>
+    protected override void RunTool()
     {
-        protected override void RunTool()
-        {
-            var tool = new JekyllDoctorCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
-            tool.Doctor(Settings);
-        }
+        var tool = new JekyllDoctorCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
+        tool.Doctor(Settings);
     }
 }

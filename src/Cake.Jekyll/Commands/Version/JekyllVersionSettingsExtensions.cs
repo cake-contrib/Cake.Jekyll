@@ -17,55 +17,54 @@
 using System;
 using Cake.Core.IO;
 
-namespace Cake.Jekyll.Commands.Version
+namespace Cake.Jekyll.Commands.Version;
+
+/// <summary>
+/// Extensions for <see cref="JekyllVersionSettings"/>.
+/// </summary>
+public static class JekyllVersionSettingsExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="JekyllVersionSettings"/>.
+    /// Sets the working directory which should be used to run the Jekyll command.
     /// </summary>
-    public static class JekyllVersionSettingsExtensions
+    /// <param name="settings">The settings.</param>
+    /// <param name="path">Working directory which should be used to run the Jekyll command.</param>
+    /// <exception cref="ArgumentNullException"/>
+    /// <returns>The <paramref name="settings"/> instance with <see cref="Cake.Core.Tooling.ToolSettings.WorkingDirectory"/> set to <paramref name="path"/>.</returns>
+    public static JekyllVersionSettings SetWorkingDirectory(this JekyllVersionSettings settings, DirectoryPath path)
     {
-        /// <summary>
-        /// Sets the working directory which should be used to run the Jekyll command.
-        /// </summary>
-        /// <param name="settings">The settings.</param>
-        /// <param name="path">Working directory which should be used to run the Jekyll command.</param>
-        /// <exception cref="ArgumentNullException"/>
-        /// <returns>The <paramref name="settings"/> instance with <see cref="Cake.Core.Tooling.ToolSettings.WorkingDirectory"/> set to <paramref name="path"/>.</returns>
-        public static JekyllVersionSettings SetWorkingDirectory(this JekyllVersionSettings settings, DirectoryPath path)
+        if (settings is null)
         {
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            if (path is null)
-            {
-                throw new ArgumentNullException(nameof(path));
-            }
-
-            settings.WorkingDirectory = path;
-
-            return settings;
+            throw new ArgumentNullException(nameof(settings));
         }
 
-        /// <summary>
-        /// Specifies if Bundler should not be used to execute Jekyll.
-        /// `jekyll` instead of `bundle exec`...
-        /// </summary>
-        /// <param name="settings">The settings.</param>
-        /// <param name="enable"><see langword="true"/> to use Bundler to execute Jekyll, otherwise <see langword="false"/>.</param>
-        /// <exception cref="ArgumentNullException"/>
-        /// <returns>The <paramref name="settings"/> instance with the <see cref="JekyllSettings.DoNotUseBundler"/> property updated with the value provided in <paramref name="enable"/>.</returns>
-        public static JekyllVersionSettings DoNotUseBundler(this JekyllVersionSettings settings, bool? enable = true)
+        if (path is null)
         {
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            settings.DoNotUseBundler = enable;
-
-            return settings;
+            throw new ArgumentNullException(nameof(path));
         }
+
+        settings.WorkingDirectory = path;
+
+        return settings;
+    }
+
+    /// <summary>
+    /// Specifies if Bundler should not be used to execute Jekyll.
+    /// `jekyll` instead of `bundle exec`...
+    /// </summary>
+    /// <param name="settings">The settings.</param>
+    /// <param name="enable"><see langword="true"/> to use Bundler to execute Jekyll, otherwise <see langword="false"/>.</param>
+    /// <exception cref="ArgumentNullException"/>
+    /// <returns>The <paramref name="settings"/> instance with the <see cref="JekyllSettings.DoNotUseBundler"/> property updated with the value provided in <paramref name="enable"/>.</returns>
+    public static JekyllVersionSettings DoNotUseBundler(this JekyllVersionSettings settings, bool? enable = true)
+    {
+        if (settings is null)
+        {
+            throw new ArgumentNullException(nameof(settings));
+        }
+
+        settings.DoNotUseBundler = enable;
+
+        return settings;
     }
 }

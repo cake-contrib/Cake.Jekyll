@@ -17,14 +17,13 @@
 using Cake.Jekyll.Commands.Version;
 using Cake.Jekyll.Tests.Support;
 
-namespace Cake.Jekyll.Tests.Commands.Version
+namespace Cake.Jekyll.Tests.Commands.Version;
+
+internal sealed class JekyllVersionCommandFixture : JekyllFixture<JekyllVersionSettings>
 {
-    internal sealed class JekyllVersionCommandFixture : JekyllFixture<JekyllVersionSettings>
+    protected override void RunTool()
     {
-        protected override void RunTool()
-        {
-            var tool = new JekyllVersionCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
-            tool.Version(Settings);
-        }
+        var tool = new JekyllVersionCommand(FileSystem, Environment, ProcessRunner, Tools, Log);
+        tool.Version(Settings);
     }
 }

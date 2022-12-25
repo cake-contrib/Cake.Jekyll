@@ -20,72 +20,71 @@ using Cake.Jekyll.Core.IO;
 using FluentAssertions;
 using Xunit;
 
-namespace Cake.Jekyll.Tests.Core.IO
+namespace Cake.Jekyll.Tests.Core.IO;
+
+public class OneOrMoreDirectoryPathsTests
 {
-    public class OneOrMoreDirectoryPathsTests
+    [Fact]
+    public void OneOrMoreDirectoryPath_has_implicit_conversion_from_string()
     {
-        [Fact]
-        public void OneOrMoreDirectoryPath_has_implicit_conversion_from_string()
-        {
-            OneOrMoreDirectoryPaths target = "folder";
+        OneOrMoreDirectoryPaths target = "folder";
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(1);
-            target[0].FullPath.Should().Be("folder");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(1);
+        target[0].FullPath.Should().Be("folder");
+    }
 
-        [Fact]
-        public void OneOrMoreDirectoryPath_has_implicit_conversion_from_string_array()
-        {
-            OneOrMoreDirectoryPaths target = new [] { "folder1", "folder2" };
+    [Fact]
+    public void OneOrMoreDirectoryPath_has_implicit_conversion_from_string_array()
+    {
+        OneOrMoreDirectoryPaths target = new [] { "folder1", "folder2" };
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(2);
-            target[0].FullPath.Should().Be("folder1");
-            target[1].FullPath.Should().Be("folder2");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(2);
+        target[0].FullPath.Should().Be("folder1");
+        target[1].FullPath.Should().Be("folder2");
+    }
 
-        [Fact]
-        public void OneOrMoreDirectoryPath_has_implicit_conversion_from_List_of_String()
-        {
-            OneOrMoreDirectoryPaths target = new List<string> { "folder1", "folder2" };
+    [Fact]
+    public void OneOrMoreDirectoryPath_has_implicit_conversion_from_List_of_String()
+    {
+        OneOrMoreDirectoryPaths target = new List<string> { "folder1", "folder2" };
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(2);
-            target[0].FullPath.Should().Be("folder1");
-            target[1].FullPath.Should().Be("folder2");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(2);
+        target[0].FullPath.Should().Be("folder1");
+        target[1].FullPath.Should().Be("folder2");
+    }
 
-        [Fact]
-        public void OneOrMoreDirectoryPath_has_implicit_conversion_from_DirectoryPath()
-        {
-            OneOrMoreDirectoryPaths target = DirectoryPath.FromString("folder");
+    [Fact]
+    public void OneOrMoreDirectoryPath_has_implicit_conversion_from_DirectoryPath()
+    {
+        OneOrMoreDirectoryPaths target = DirectoryPath.FromString("folder");
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(1);
-            target[0].FullPath.Should().Be("folder");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(1);
+        target[0].FullPath.Should().Be("folder");
+    }
 
-        [Fact]
-        public void OneOrMoreDirectoryPath_has_implicit_conversion_from_DirectoryPath_array()
-        {
-            OneOrMoreDirectoryPaths target = new [] { DirectoryPath.FromString("folder1"), DirectoryPath.FromString("folder2") };
+    [Fact]
+    public void OneOrMoreDirectoryPath_has_implicit_conversion_from_DirectoryPath_array()
+    {
+        OneOrMoreDirectoryPaths target = new [] { DirectoryPath.FromString("folder1"), DirectoryPath.FromString("folder2") };
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(2);
-            target[0].FullPath.Should().Be("folder1");
-            target[1].FullPath.Should().Be("folder2");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(2);
+        target[0].FullPath.Should().Be("folder1");
+        target[1].FullPath.Should().Be("folder2");
+    }
 
-        [Fact]
-        public void OneOrMoreDirectoryPath_has_implicit_conversion_from_List_of_DirectoryPath()
-        {
-            OneOrMoreDirectoryPaths target = new List<DirectoryPath> { DirectoryPath.FromString("folder1"), DirectoryPath.FromString("folder2") };
+    [Fact]
+    public void OneOrMoreDirectoryPath_has_implicit_conversion_from_List_of_DirectoryPath()
+    {
+        OneOrMoreDirectoryPaths target = new List<DirectoryPath> { DirectoryPath.FromString("folder1"), DirectoryPath.FromString("folder2") };
 
-            target.Should().NotBeNull();
-            target.Count.Should().Be(2);
-            target[0].FullPath.Should().Be("folder1");
-            target[1].FullPath.Should().Be("folder2");
-        }
+        target.Should().NotBeNull();
+        target.Count.Should().Be(2);
+        target[0].FullPath.Should().Be("folder1");
+        target[1].FullPath.Should().Be("folder2");
     }
 }
