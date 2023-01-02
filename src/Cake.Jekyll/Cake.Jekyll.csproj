@@ -28,7 +28,7 @@
     <Authors>C. Augusto Proiete &amp; Contributors</Authors>
     <Company>augustoproiete.net</Company>
     <Description>Cake addin that makes Jekyll available in Cake builds. Jekyll is a blog-aware, static site generator in Ruby.</Description>
-    <Copyright>Copyright 2021-2022 C. Augusto Proiete &amp; Contributors - Provided under the MIT License</Copyright>
+    <Copyright>Copyright 2021-2023 C. Augusto Proiete &amp; Contributors - Provided under the MIT License</Copyright>
     <PackageTags>cake;jekyll;bundler;bundle;ruby;blog;cake-addin;cake-build;addin;script;build;cake-contrib;augustoproiete;augusto-proiete</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>images\icon.png</PackageIcon>
